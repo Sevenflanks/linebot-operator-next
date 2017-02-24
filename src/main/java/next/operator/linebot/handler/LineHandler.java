@@ -57,6 +57,7 @@ public class LineHandler {
         client.pushMessage(new PushMessage(event.getSource().getUserId(), new TextMessage(message)));
     }
 
+    /** 被加入群組 */
     @EventMapping
     public void handleJoinEvent(JoinEvent event) {
         log.info("Joined: {}", event);
