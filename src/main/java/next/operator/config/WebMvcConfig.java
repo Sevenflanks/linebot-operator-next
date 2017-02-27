@@ -29,10 +29,4 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		converters.add(new MappingJackson2HttpMessageConverter(objectMapper));
 		converters.add(new ByteArrayHttpMessageConverter());
 	}
-
-	@Bean
-	@Primary
-	public WebObjectMapper webObjectMapper() {
-		return new WebObjectMapper();
-	}
 }
