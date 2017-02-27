@@ -13,9 +13,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +61,7 @@ public class CurrencyExtRateDataLoader {
           final String key = e.getKey();
           final String extTo = key.substring(EX_FROM.length());
           final LocalDateTime utc = LocalDateTime.parse(e.getValue().get(RAW_FIELD_TIME), UTC_FORMATTER);
-          final LocalDateTime localDateTime = OffsetDateTime.of(utc, ZoneOffset.UTC).toLocalDateTime();
+          final LocalDateTime localDateTime = OffsetDateTime.of(utc, ZoneOffset.UTC).withOffsetSameInstant(ZoneOffset.ofHours(8)).toLocalDateTime();
           final BigDecimal extrate = BigDecimal.valueOf(Double.valueOf(e.getValue().get(RAW_FIELD_EXTRATE)));
 
           final CurrencyExrateModel model = new CurrencyExrateModel();
