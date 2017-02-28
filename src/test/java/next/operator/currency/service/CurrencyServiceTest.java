@@ -1,31 +1,15 @@
 package next.operator.currency.service;
 
 import lombok.extern.slf4j.Slf4j;
-import next.operator.AppTest;
-import org.junit.Before;
+import next.operator.GenericTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @Slf4j
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {AppTest.class})
-public class CurrencyServiceTest {
+public class CurrencyServiceTest extends GenericTest {
 
   @Autowired
   private CurrencyService currencyService;
-
-  @Before
-  public void setUp() throws Exception {
-
-    // 等待匯率資料進來
-    while(CurrencyService.exrateDatas == null) {
-      Thread.sleep(1000);
-    }
-
-  }
 
   @Test
   public void getExrate() throws Exception {
