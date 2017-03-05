@@ -22,7 +22,7 @@ public class CurrencyJob {
   private CurrencyExtRateDataLoader currencyExtRateDataLoader;
 
   @Scheduled(fixedRate = 10 * 60 * 1000)
-  public void test() {
+  public void load() {
     log.debug("loading CurrencyExtRateData");
     try {
       final List<CurrencyExrateModel> datas = currencyExtRateDataLoader.load();

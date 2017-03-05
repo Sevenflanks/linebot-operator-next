@@ -33,11 +33,13 @@ public class LineHandler {
   @EventMapping
   public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
     log.debug("TextMessageEvent: {}", event);
+    setCurrentUserName(event);
+
     final String msgTxt = event.getMessage().getText();
     TextMessage response = null;
 
     try {
-      if (msgTxt.trim().startsWith("/")) {
+      if (msgTxt.trim().startsWith("/") || msgTxt.trim().startsWith("！")) {
         response = new TextMessage(respondentService.commend(msgTxt));
       }
     } catch (ValidationException e) {
@@ -46,6 +48,7 @@ public class LineHandler {
       log.info(e.getMessage(), e);
     }
 
+    cleanCurrentUser();
     return response;
   }
 
@@ -105,6 +108,17 @@ public class LineHandler {
 
   public void sendToAll(String message) {
     client.multicast(new Multicast(userDao.findAll(), new TextMessage(message)));
+  }
+
+  private void setCurrentUserName(Event event) {
+    try {
+      userDao.currentUserName.set(client.getProfile(event.getSource().getUserId()).get().getDisplayName());
+    } catch (InterruptedException | ExecutionException ignored) {
+    }
+  }
+
+  private void cleanCurrentUser() {
+    userDao.currentUserName.set(null);
   }
 
 }

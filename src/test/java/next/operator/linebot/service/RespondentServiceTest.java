@@ -17,6 +17,17 @@ public class RespondentServiceTest extends GenericTest {
     print("/exrate twd jpy");
     print("/exrate 100 twd jpy");
     print("/exrate 10.5 usd jpy");
+    print("！匯率 10.5 usd jpy");
+
+    print("/roll 1d6");
+    print("/roll 6d6");
+    print("/roll 6d6 2d10");
+    print("！骰 6d6 2d10");
+    print("/roll 6d6+1");
+    print("/roll 6d6*5");
+    print("/roll 10d3*2-2");
+
+    print("/oil");
   }
 
   private void print(String commend) {
