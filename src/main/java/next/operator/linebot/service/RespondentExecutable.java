@@ -3,6 +3,9 @@ package next.operator.linebot.service;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * 指令介面
+ */
 public interface RespondentExecutable {
 
   /** 語法結構(允許多種) */
