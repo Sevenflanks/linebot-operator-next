@@ -3,6 +3,7 @@
 這是一個玩票性質的bot, 只是提供一個介面用來學學linebot和結合其他服務用的.
 
 ## 部屬
+- 若只是要看本bot提供的服務, 可以跳過本章節
 - 本bot運行以spring boot為基礎, 需要能有運行java的環境
 - 請先了解Line message api, 為了能正常串接, 必須是一個要有SSL驗證的服務平台
 - App secure的設定在 `resources/application.properties`
