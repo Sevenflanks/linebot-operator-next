@@ -51,7 +51,7 @@ public class RespondentService {
     return readers.stream()
             .filter(r -> r.isReadable(message))
             .findAny()
-            .map(r -> r.read(message));
+            .map(r -> r.talk(message));
   }
 
 }

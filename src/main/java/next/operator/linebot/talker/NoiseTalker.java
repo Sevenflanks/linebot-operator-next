@@ -1,4 +1,4 @@
-package next.operator.linebot.reader;
+package next.operator.linebot.talker;
 
 import next.operator.ChineseTokens;
 import next.operator.linebot.service.RespondentReadable;
@@ -11,10 +11,10 @@ import java.util.regex.Pattern;
 /**
  * 回垃圾話用的
  * 當對話中出現[要不要][去不去]等N不N文法時
- * 隨機回垃圾話: N or 不N or 想N
+ * 隨機回垃圾話: N or 不N
  */
 @Service
-public class NoiseReader implements RespondentReadable {
+public class NoiseTalker implements RespondentReadable {
 
 	@Autowired
 	private ChineseTokens chineseTokens;
@@ -28,7 +28,7 @@ public class NoiseReader implements RespondentReadable {
 	}
 
 	@Override
-	public String read(String message) {
+	public String talk(String message) {
 		final Matcher matcher = readPattern.matcher(message);
 		if (matcher.find()) {
 			final String keyWord = chineseTokens.run(matcher.group(2))[0];

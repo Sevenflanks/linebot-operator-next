@@ -9,5 +9,5 @@ public interface RespondentReadable {
   boolean isReadable(String message);
 
   /** 執行 */
-  String read(String message);
+  String talk(String message);
 }

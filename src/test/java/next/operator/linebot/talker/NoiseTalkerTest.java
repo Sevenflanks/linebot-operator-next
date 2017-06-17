@@ -1,4 +1,4 @@
-package next.operator.linebot.reader;
+package next.operator.linebot.talker;
 
 import next.operator.ChineseTokens;
 import next.operator.GenericTest;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class NoiseReaderTest extends GenericTest {
+public class NoiseTalkerTest extends GenericTest {
 
 	@Autowired
 	private RespondentService respondentService;
