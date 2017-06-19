@@ -16,25 +16,26 @@ import java.util.regex.Pattern;
 @Service
 public class NoiseTalker implements RespondentReadable {
 
-	@Autowired
-	private ChineseTokens chineseTokens;
+  @Autowired
+  private ChineseTokens chineseTokens;
 
-	final Pattern readPattern = Pattern.compile("([\\u4e00-\\u9fa5A-Za-z]+?)不(\\1[\\u4e00-\\u9fa5A-Za-z]*)");
-	final String[] response = {"", "不"};
+  final Pattern readPattern = Pattern.compile("([\\u4e00-\\u9fa5A-Za-z]+?)不(\\1[\\u4e00-\\u9fa5A-Za-z]*)");
+  final String[] response = {"", "不"};
+  final String[] suffixes = {"", "喔", "唄", "啦", "唷"};
 
-	@Override
-	public boolean isReadable(String message) {
-		return readPattern.matcher(message).find();
-	}
+  @Override
+  public boolean isReadable(String message) {
+    return readPattern.matcher(message).find();
+  }
 
-	@Override
-	public String talk(String message) {
-		final Matcher matcher = readPattern.matcher(message);
-		if (matcher.find()) {
-			final String keyWord = chineseTokens.run(matcher.group(2))[0];
-			return response[(int)(Math.random() * response.length)] + keyWord;
-		} else {
-			return null;
-		}
-	}
+  @Override
+  public String talk(String message) {
+    final Matcher matcher = readPattern.matcher(message);
+    if (matcher.find()) {
+      final String keyWord = chineseTokens.run(matcher.group(2))[0];
+      return response[(int) (Math.random() * response.length)] + keyWord + suffixes[(int) (Math.random() * suffixes.length)];
+    } else {
+      return null;
+    }
+  }
 }
