@@ -39,7 +39,7 @@ public class RollingDiceExecutor implements FunctionExecutable {
   @Override
   public String execute(String... args) {
     StringBuilder sb = new StringBuilder();
-    sb.append(userDao.getCurrentUserName()).append("開始執骰\n");
+    sb.append(userDao.getCurrentUserName()).append("正在執骰\n");
 
     List<Integer[]> allResult = Lists.newArrayList();
     for (String rollDice : args) {
@@ -51,7 +51,12 @@ public class RollingDiceExecutor implements FunctionExecutable {
       sb.append("：\n");
       sb.append("\t[").append(Stream.of(rollResult).map(String::valueOf).collect(Collectors.joining("+"))).append("]\n");
     }
-    sb.append("總合=").append(allResult.stream().flatMap(Stream::of).mapToInt(i -> i).sum());
+    if (allResult.isEmpty()) {
+      sb.append("...欸？你沒有丟骰子啊！");
+    } else {
+      sb.append("總合=").append(allResult.stream().flatMap(Stream::of).mapToInt(i -> i).sum());
+    }
+
     return sb.toString();
   }
 
