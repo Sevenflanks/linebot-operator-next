@@ -30,7 +30,7 @@ public class CalcExecutor implements FunctionExecutable {
     sb.append("算好了！").append(userDao.getCurrentUserName()).append("剛剛給的算式答案是這樣：\n");
     if (args.length > 0) {
       for (String evaluation : args) {
-        sb.append(evaluation).append(" = ").append(calculateService.calc(evaluation));
+        sb.append(evaluation).append(" = ").append(calculateService.calc(evaluation)).append("\n");
       }
     } else {
       sb.append("...欸？你沒有寫算式哦！答案是零");
