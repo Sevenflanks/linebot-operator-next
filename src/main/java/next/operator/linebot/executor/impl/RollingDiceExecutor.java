@@ -44,8 +44,8 @@ public class RollingDiceExecutor implements FunctionExecutable {
       final DiceModel dice = parse(rollDice);
       final Integer[] rollResult = diceService.roll(dice);
       allResult.add(rollResult);
-      sb.append("丟了").append(dice.getTimes()).append("顆").append(dice.getMax()).append("面骰，結果是：\n");
-      sb.append("\t[").append(Stream.of(rollResult).map(String::valueOf).collect(Collectors.joining("+"))).append("]");
+      sb.append("丟了").append(dice.getTimes()).append("顆").append(dice.getMax()).append("面骰，加權(").append(dice.getCorrection()).append(")：\n");
+      sb.append("\t[").append(Stream.of(rollResult).map(String::valueOf).collect(Collectors.joining("+"))).append("]\n");
     }
     sb.append("總合=").append(allResult.stream().flatMap(Stream::of).mapToInt(i -> i).sum());
     return sb.toString();
