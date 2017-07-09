@@ -37,15 +37,15 @@ public class RollingDiceExecutor implements FunctionExecutable {
   @Override
   public String execute(String... args) {
     StringBuilder sb = new StringBuilder();
-    sb.append(userDao.getCurrentUserName()).append("擲骰結果是：\n");
+    sb.append(userDao.getCurrentUserName()).append("開始執骰\n");
 
     List<Integer[]> allResult = Lists.newArrayList();
     for (String rollDice : args) {
       final DiceModel dice = parse(rollDice);
       final Integer[] rollResult = diceService.roll(dice);
       allResult.add(rollResult);
-      sb.append("[").append(Stream.of(rollResult).map(String::valueOf).collect(Collectors.joining("+"))).append("]")
-          .append(" (").append(rollDice).append(")\n");
+      sb.append("丟了").append(dice.getTimes()).append("顆").append(dice.getMax()).append("面骰，結果是：\n");
+      sb.append("\t[").append(Stream.of(rollResult).map(String::valueOf).collect(Collectors.joining("+"))).append("]");
     }
     sb.append("總合=").append(allResult.stream().flatMap(Stream::of).mapToInt(i -> i).sum());
     return sb.toString();
