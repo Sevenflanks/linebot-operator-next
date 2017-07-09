@@ -1,5 +1,6 @@
 package next.operator.linebot.executor.impl;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import next.operator.linebot.executor.FunctionExecutable;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -44,7 +46,9 @@ public class RollingDiceExecutor implements FunctionExecutable {
       final DiceModel dice = parse(rollDice);
       final Integer[] rollResult = diceService.roll(dice);
       allResult.add(rollResult);
-      sb.append("丟了").append(dice.getTimes()).append("顆").append(dice.getMax()).append("面骰，加權(").append(dice.getCorrection()).append(")：\n");
+      sb.append("丟了").append(dice.getTimes()).append("顆").append(dice.getMax()).append("面骰");
+      Optional.ofNullable(Strings.emptyToNull(dice.getCorrection())).ifPresent(c -> sb.append("，加權(").append(c).append(")"));
+      sb.append("：\n");
       sb.append("\t[").append(Stream.of(rollResult).map(String::valueOf).collect(Collectors.joining("+"))).append("]\n");
     }
     sb.append("總合=").append(allResult.stream().flatMap(Stream::of).mapToInt(i -> i).sum());
