@@ -33,7 +33,7 @@ public class CalcExecutor implements FunctionExecutable {
         sb.append(evaluation).append(" = ").append(calculateService.calc(evaluation)).append("\n");
       }
     } else {
-      sb.append("...欸？你沒有寫算式哦！答案是零");
+      sb.append("...欸？你沒有寫算式哦，答案是零！");
     }
     return sb.toString();
   }
