@@ -1,7 +1,6 @@
 package next.operator.linebot.service;
 
 import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
@@ -12,6 +11,7 @@ import next.operator.will.exception.WillException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import javax.validation.ValidationException;
 import java.util.Arrays;
@@ -53,7 +53,7 @@ public class RespondentService {
   }
 
   private String toWill(MessageEvent<TextMessageContent> event) {
-    client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
+//    client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
     try {
       final String response = willClient.talkToWill(event);
       if (response == null) {
@@ -65,9 +65,11 @@ public class RespondentService {
       return "打開的方式好像不對喔！薇兒說：\n" + e.getMessage();
     } catch (HttpClientErrorException e) {
       return "薇兒好像還在睡耶..." + e.getRawStatusCode() + "找不到人QQ";
+    } catch (HttpServerErrorException e) {
+      return "奇怪，薇兒的電話好像" + e.getRawStatusCode() + "壞了，快找人來修理呀！";
     } catch (Exception e) {
       log.error(e.getMessage(), e);
-      return "奇怪，薇兒的電話好像壞了，快找人來修理呀！";
+      return "糟糕，我的電話好像壞了，快找人來修理呀！";
     }
   }
 
