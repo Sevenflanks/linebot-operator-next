@@ -1,7 +1,7 @@
 package next.operator.linebot.service;
 
 import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
@@ -53,7 +53,7 @@ public class RespondentService {
   }
 
   private String toWill(MessageEvent<TextMessageContent> event) {
-    client.replyMessage(new ReplyMessage(event.getReplyToken(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
+    client.pushMessage(new PushMessage(event.getSource().getUserId(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
     try {
       return "薇兒說：\n" + willClient.talkToWill(event);
     } catch (WillException e) {
