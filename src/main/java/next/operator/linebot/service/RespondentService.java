@@ -65,9 +65,9 @@ public class RespondentService {
     } catch (WillException e) {
       return "打開的方式好像不對喔！薇兒說：\n" + e.getMessage();
     } catch (HttpClientErrorException e) {
-      return "薇兒好像還在睡耶..." + e.getRawStatusCode() + "找不到人QQ";
+      return "薇兒好像還在睡耶...找不到人QQ" + "(" + e.getRawStatusCode() + ")";
     } catch (HttpServerErrorException e) {
-      return "奇怪，薇兒的電話好像" + e.getRawStatusCode() + "壞了，快找人來修理呀！";
+      return "奇怪，薇兒的電話好像壞了，快找人來修理呀！" + "(" + e.getRawStatusCode() + ")";
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       return "糟糕，我的電話好像壞了，快找人來修理呀！";
