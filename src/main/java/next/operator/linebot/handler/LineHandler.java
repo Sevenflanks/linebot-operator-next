@@ -35,11 +35,10 @@ public class LineHandler {
 		log.debug("TextMessageEvent: {}", event);
 		setCurrentUserName(event);
 
-		final String msgTxt = event.getMessage().getText();
 		TextMessage response = null;
 
 		try {
-			response = respondentService.response(msgTxt);
+			response = respondentService.response(event);
 		} catch (ValidationException e) {
 			response = new TextMessage(e.getMessage());
 		} catch (Exception e) {

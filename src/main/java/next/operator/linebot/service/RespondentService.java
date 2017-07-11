@@ -1,9 +1,17 @@
 package next.operator.linebot.service;
 
+import com.linecorp.bot.client.LineMessagingClient;
+import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
+import lombok.extern.slf4j.Slf4j;
 import next.operator.user.dao.UserDao;
+import next.operator.will.client.WillClient;
+import next.operator.will.exception.WillException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.ValidationException;
 import java.util.Arrays;
@@ -14,6 +22,7 @@ import java.util.stream.Stream;
 /**
  * 處理純文字類型的訪問
  */
+@Slf4j
 @Service
 public class RespondentService {
 
@@ -24,13 +33,36 @@ public class RespondentService {
   private List<RespondentReadable> readers;
 
   @Autowired
+  private LineMessagingClient client;
+
+  @Autowired
+  private WillClient willClient;
+
+  @Autowired
   private UserDao userDao;
 
-  public TextMessage response(String message) {
+  public TextMessage response(MessageEvent<TextMessageContent> event) {
+    final String message = event.getMessage().getText();
     if (message.trim().startsWith("/") || message.trim().startsWith("！")) {
       return new TextMessage(commend(message));
+    } else if (message.trim().startsWith("薇兒")) {
+      return new TextMessage(toWill(event));
     } else {
       return nativeLanguage(message).map(TextMessage::new).orElse(null);
+    }
+  }
+
+  private String toWill(MessageEvent<TextMessageContent> event) {
+    client.replyMessage(new ReplyMessage(event.getReplyToken(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
+    try {
+      return "薇兒說：\n" + willClient.talkToWill(event);
+    } catch (WillException e) {
+      return "打開的方式好像不對喔！薇兒說：\n" + e.getMessage();
+    } catch (HttpClientErrorException e) {
+      return "薇兒好像還在睡耶..." + e.getRawStatusCode() + "找不到人QQ";
+    } catch (Exception e) {
+      log.error(e.getMessage(), e);
+      return "奇怪，薇兒的電話好像壞了，快找人來修理呀！";
     }
   }
 

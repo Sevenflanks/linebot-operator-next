@@ -1,5 +1,7 @@
 package next.operator.linebot.service;
 
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
 import lombok.extern.slf4j.Slf4j;
 import next.operator.GenericTest;
 import org.junit.Test;
@@ -28,10 +30,14 @@ public class RespondentServiceTest extends GenericTest {
     print("/roll 10d3*2-2");
 
     print("/oil");
+
+    print("薇兒 你好");
   }
 
   private void print(String commend) {
-    System.out.println(respondentService.commend(commend));
+    final MessageEvent<TextMessageContent> event =
+        new MessageEvent<TextMessageContent>(null, null, new TextMessageContent(null, commend), null);
+    System.out.println(respondentService.response(event).getText());
   }
 
 }

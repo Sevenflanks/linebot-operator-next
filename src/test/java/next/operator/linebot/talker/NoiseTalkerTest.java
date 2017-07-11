@@ -19,15 +19,15 @@ public class NoiseTalkerTest extends GenericTest {
 
 	@Test
 	public void test() throws IOException, ClassNotFoundException {
-		for (int i = 0; i < 100; i++) {
-			System.out.println(respondentService.response("這句話懂不懂"));
-			System.out.println(respondentService.response("到底奇不奇怪"));
-			System.out.println(respondentService.response("low不low"));
-			System.out.println(respondentService.response("奇怪不奇怪哈哈"));
-			System.out.println(respondentService.response("神不神奇顆顆"));
-			System.out.println(respondentService.response("30歲前能不能結婚"));
-			System.out.println(respondentService.response("只是不知道造不造的到（？"));
-		}
+//		for (int i = 0; i < 100; i++) {
+//			System.out.println(respondentService.response("這句話懂不懂"));
+//			System.out.println(respondentService.response("到底奇不奇怪"));
+//			System.out.println(respondentService.response("low不low"));
+//			System.out.println(respondentService.response("奇怪不奇怪哈哈"));
+//			System.out.println(respondentService.response("神不神奇顆顆"));
+//			System.out.println(respondentService.response("30歲前能不能結婚"));
+//			System.out.println(respondentService.response("只是不知道造不造的到（？"));
+//		}
 		System.out.println(Arrays.toString(chineseTokens.run("這句話懂不懂")));
 		System.out.println(Arrays.toString(chineseTokens.run("到底奇不奇怪")));
 		System.out.println(Arrays.toString(chineseTokens.run("low不low")));
