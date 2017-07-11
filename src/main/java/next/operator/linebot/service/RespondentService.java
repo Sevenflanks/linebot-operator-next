@@ -55,7 +55,12 @@ public class RespondentService {
   private String toWill(MessageEvent<TextMessageContent> event) {
     client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
     try {
-      return "薇兒說：\n" + willClient.talkToWill(event);
+      final String response = willClient.talkToWill(event);
+      if (response == null) {
+        return "薇兒不理你耶...";
+      } else {
+        return "薇兒說：\n" + willClient.talkToWill(event);
+      }
     } catch (WillException e) {
       return "打開的方式好像不對喔！薇兒說：\n" + e.getMessage();
     } catch (HttpClientErrorException e) {
