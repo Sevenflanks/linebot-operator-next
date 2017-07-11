@@ -1,6 +1,7 @@
 package next.operator.linebot.service;
 
 import com.linecorp.bot.client.LineMessagingClient;
+import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
@@ -53,7 +54,7 @@ public class RespondentService {
   }
 
   private String toWill(MessageEvent<TextMessageContent> event) {
-//    client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
+    client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
     try {
       final String response = willClient.talkToWill(event);
       if (response == null) {
