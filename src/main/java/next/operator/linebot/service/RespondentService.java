@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 
 import javax.validation.ValidationException;
 import java.util.Arrays;
@@ -54,9 +55,9 @@ public class RespondentService {
   }
 
   private TextMessage toWill(MessageEvent<TextMessageContent> event) {
-    client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
     String response;
     try {
+      client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦..."))).get();
       response = willClient.talkToWill(event);
       if (response == null) {
         response = "薇兒不理你耶...";
@@ -65,8 +66,8 @@ public class RespondentService {
       }
     } catch (WillException e) {
       response = "打開的方式好像不對喔！薇兒說：\n" + e.getMessage();
-    } catch (HttpClientErrorException e) {
-      response = "薇兒好像還在睡耶...找不到人QQ" + "(" + e.getRawStatusCode() + ")";
+    } catch (ResourceAccessException | HttpClientErrorException e) {
+      response = "薇兒好像還在睡耶...找不到人QQ";
     } catch (HttpServerErrorException e) {
       response = "奇怪，薇兒的電話好像壞了，快找人來修理呀！" + "(" + e.getRawStatusCode() + ")";
     } catch (Exception e) {
