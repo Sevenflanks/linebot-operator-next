@@ -1,7 +1,6 @@
 package next.operator.diagnostic.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Maps;
 import next.operator.diagnostic.exception.DiagnosticException;
 import next.operator.diagnostic.model.DiagnosticModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,10 +34,7 @@ public class DiagnosticClient {
   }
 
   public DiagnosticModel diagnostic(String url) throws IOException {
-    final Map<String, String> args = Maps.newHashMap();
-    args.put("output", "pb");
-    args.put("site", url);
-    final ResponseEntity<String> response = restTemplate.getForEntity(DIAGNOSTIC_URL, String.class, args);
+    final ResponseEntity<String> response = restTemplate.getForEntity(DIAGNOSTIC_URL + "?output=pb&site=" + url, String.class);
 
     if (response.getStatusCodeValue() == 200) {
       final Matcher matcher = RESP_PATTERN.matcher(response.getBody());

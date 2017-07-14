@@ -70,7 +70,7 @@ public class DiagnosticModel {
         break;
       case 2:
         sb.append("未找到任何不安全的內容～");
-        sb.append(" 請安心食用");
+        sb.append("請安心食用");
         break;
       case 3:
         sb.append("這個網站的部分網頁不安全").append("\n");
@@ -94,7 +94,7 @@ public class DiagnosticModel {
         break;
     }
 
-    return super.toString();
+    return sb.toString();
   }
 
   private void risk(StringBuilder sb) {

@@ -63,7 +63,8 @@ public class UrlTalker implements RespondentReadable {
     } catch (DiagnosticException e) {
       return e.getMessage();
     } catch (ResourceAccessException | HttpClientErrorException | HttpServerErrorException e) {
-      return "跟估狗大神的連線好像怪怪的，檢查不了，你稍後再來試試";
+      log.error(e.getMessage(), e);
+      return "跟估狗大神的連線好像怪怪的，檢查不了，你等一下再來試試";
     } catch (Exception e) {
       log.error(e.getMessage(), e);
       return "檢查網址安全性的功能壞掉嚕，快叫工程師來加班！\n" + e.getClass().getSimpleName() + ":" + e.getMessage();
