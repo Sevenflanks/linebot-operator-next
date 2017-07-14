@@ -19,6 +19,7 @@ import javax.validation.ValidationException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -50,10 +51,11 @@ public class RespondentService {
     } else if (WillClient.pattern.matcher(message).find()) {
       return toWill(event);
     } else {
-      return nativeLanguage(message).map(TextMessage::new).orElse(null);
+      return nativeLanguage(event).map(TextMessage::new).orElse(null);
     }
   }
 
+  /** 給薇兒的指令 */
   private TextMessage toWill(MessageEvent<TextMessageContent> event) {
     String response;
     try {
@@ -72,7 +74,7 @@ public class RespondentService {
       response = "奇怪，薇兒的電話好像壞了，快找人來修理呀！" + "(" + e.getRawStatusCode() + ")";
     } catch (Exception e) {
       log.error(e.getMessage(), e);
-      response = "糟糕，我的電話好像壞了，快找人來修理呀！";
+      response = "糟糕，我的電話好像壞了，快找人來修理呀！\n" + e.getClass().getSimpleName() + ":" + e.getMessage();
     }
     client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage(response)));
 
@@ -80,7 +82,7 @@ public class RespondentService {
   }
 
   /** 處理所有/開頭進來的, 被視為命令 */
-  String commend(String message) {
+  private String commend(String message) {
     final String[] commend = message.trim().split(" ");
     final String method = commend[0];
     final String[] args = Arrays.copyOfRange(commend, 1, commend.length);
@@ -92,11 +94,19 @@ public class RespondentService {
   }
 
   /** 處理所有原生語言命令 */
-  Optional<String> nativeLanguage(String message) {
+  private Optional<String> nativeLanguage(MessageEvent<TextMessageContent> event) {
     return readers.stream()
-            .filter(r -> r.isReadable(message))
+            .filter(r -> ifThen(r.isReadable(event.getMessage().getText()), event, r.doFirst(client)))
             .findAny()
-            .map(r -> r.talk(message));
+            .map(r -> r.talk(event.getMessage().getText()));
+  }
+
+  /** 若為True則做某件事, 否則沒事 */
+  private boolean ifThen(boolean bool, MessageEvent<TextMessageContent> event, Consumer<MessageEvent<TextMessageContent>> consumer) {
+    if (bool && consumer != null) {
+      consumer.accept(event);
+    }
+    return bool;
   }
 
 }

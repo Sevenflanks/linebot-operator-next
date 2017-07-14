@@ -1,10 +1,14 @@
 package next.operator.linebot.talker;
 
+import com.linecorp.bot.client.LineMessagingClient;
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.ChineseTokens;
 import next.operator.linebot.service.RespondentReadable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +30,11 @@ public class NoiseTalker implements RespondentReadable {
   @Override
   public boolean isReadable(String message) {
     return readPattern.matcher(message).find();
+  }
+
+  @Override
+  public Consumer<MessageEvent<TextMessageContent>> doFirst(LineMessagingClient client) {
+    return null;
   }
 
   @Override

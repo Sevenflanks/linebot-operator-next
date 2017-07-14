@@ -7,11 +7,9 @@ import next.operator.will.model.ResponseModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.nio.charset.Charset;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -19,7 +17,7 @@ import java.util.stream.Collectors;
 @Component
 public class WillClient {
 
-  public static final Pattern pattern = Pattern.compile("W:(.+?:)*");
+  public static final Pattern pattern = Pattern.compile("^W:(.+?:)*");
   private static final int TIME_OUT = 5_000;
 
   @Value("${will.url}")
@@ -29,7 +27,6 @@ public class WillClient {
 
   public WillClient() {
     restTemplate = new RestTemplate();
-    restTemplate.getMessageConverters().add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
     final SimpleClientHttpRequestFactory rf = (SimpleClientHttpRequestFactory)restTemplate.getRequestFactory();
     rf.setReadTimeout(TIME_OUT);
     rf.setConnectTimeout(TIME_OUT);
