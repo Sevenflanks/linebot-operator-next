@@ -31,7 +31,7 @@ public class RespondentServiceTest extends GenericTest {
 
     print("/oil");
 
-    print("薇兒 你好");
+    print("W:1101");
   }
 
   private void print(String commend) {

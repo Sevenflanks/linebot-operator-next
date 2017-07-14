@@ -12,11 +12,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /** 串薇兒的API */
 @Component
 public class WillClient {
 
+  public static final Pattern pattern = Pattern.compile("W:(.+?:)*");
   private static final int TIME_OUT = 5_000;
 
   @Value("${will.url}")
@@ -33,10 +36,13 @@ public class WillClient {
   }
 
   /** 丟整個event給她 */
-  public ResponseModel talkToWill(MessageEvent<TextMessageContent> event) {
+  public String talkToWill(MessageEvent<TextMessageContent> event) {
     final ResponseEntity<ResponseModel> response = restTemplate.postForEntity(willUrl, event, ResponseModel.class);
-    if (response.getStatusCodeValue() == 200) {
-      return response.getBody();
+
+    if (response.getStatusCodeValue() == 200 && response.getBody().isMessageEmpty()) {
+      return response.getBody().getData();
+    } else if (response.getStatusCodeValue() == 200) {
+      throw new WillException(response.getBody().getMessages().stream().collect(Collectors.joining("\n")));
     } else {
       // 若發生錯誤則拿訊息回來
       throw new WillException(response.getStatusCode().getReasonPhrase());
