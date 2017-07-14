@@ -47,13 +47,13 @@ public class RespondentService {
     if (message.trim().startsWith("/") || message.trim().startsWith("！")) {
       return new TextMessage(commend(message));
     } else if (message.trim().startsWith("薇兒")) {
-      return new TextMessage(toWill(event));
+      return toWill(event);
     } else {
       return nativeLanguage(message).map(TextMessage::new).orElse(null);
     }
   }
 
-  private String toWill(MessageEvent<TextMessageContent> event) {
+  private TextMessage toWill(MessageEvent<TextMessageContent> event) {
     client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
     String response;
     try {
