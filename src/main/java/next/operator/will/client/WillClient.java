@@ -5,7 +5,7 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.will.exception.WillException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -26,8 +26,7 @@ public class WillClient {
   public WillClient() {
     restTemplate = new RestTemplate();
     restTemplate.getMessageConverters().add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
-    final HttpComponentsClientHttpRequestFactory rf =
-        (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
+    final SimpleClientHttpRequestFactory rf = (SimpleClientHttpRequestFactory)restTemplate.getRequestFactory();
     rf.setReadTimeout(TIME_OUT);
     rf.setConnectTimeout(TIME_OUT);
   }
