@@ -30,7 +30,7 @@ public class UrlTalker implements RespondentReadable {
   @Autowired
   private DiagnosticClient diagnosticClient;
 
-  final Pattern readPattern = Pattern.compile("((http[s]?|ftp):\\/)?\\/?([^:\\/\\s]+)((\\/[^\\s]+)*\\/)([\\w\\-\\.]+[^#?\\s]+)(.*)?(#[\\w\\-]+)?\\s?");
+  final Pattern readPattern = Pattern.compile("(http[s]?|ftp):\\/\\/[^\\s]*+");
 
   @Override
   public boolean isReadable(String message) {
