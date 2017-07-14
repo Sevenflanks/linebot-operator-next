@@ -55,23 +55,27 @@ public class RespondentService {
 
   private String toWill(MessageEvent<TextMessageContent> event) {
     client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
+    String response;
     try {
-      final String response = willClient.talkToWill(event);
+      response = willClient.talkToWill(event);
       if (response == null) {
-        return "薇兒不理你耶...";
+        response = "薇兒不理你耶...";
       } else {
-        return "薇兒說：\n" + response;
+        response = "薇兒說：\n" + response;
       }
     } catch (WillException e) {
-      return "打開的方式好像不對喔！薇兒說：\n" + e.getMessage();
+      response = "打開的方式好像不對喔！薇兒說：\n" + e.getMessage();
     } catch (HttpClientErrorException e) {
-      return "薇兒好像還在睡耶...找不到人QQ" + "(" + e.getRawStatusCode() + ")";
+      response = "薇兒好像還在睡耶...找不到人QQ" + "(" + e.getRawStatusCode() + ")";
     } catch (HttpServerErrorException e) {
-      return "奇怪，薇兒的電話好像壞了，快找人來修理呀！" + "(" + e.getRawStatusCode() + ")";
+      response = "奇怪，薇兒的電話好像壞了，快找人來修理呀！" + "(" + e.getRawStatusCode() + ")";
     } catch (Exception e) {
       log.error(e.getMessage(), e);
-      return "糟糕，我的電話好像壞了，快找人來修理呀！";
+      response = "糟糕，我的電話好像壞了，快找人來修理呀！";
     }
+    client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage(response)));
+
+    return null;
   }
 
   /** 處理所有/開頭進來的, 被視為命令 */
