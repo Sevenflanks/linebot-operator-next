@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import next.operator.user.dao.UserDao;
 import next.operator.will.client.WillClient;
 import next.operator.will.exception.WillException;
+import next.operator.will.model.ResponseModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -18,6 +19,7 @@ import javax.validation.ValidationException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -57,11 +59,13 @@ public class RespondentService {
     client.pushMessage(new PushMessage(event.getSource().getSenderId(), new TextMessage("收到了要給薇兒的訊息！稍等～我幫你找她哦...")));
     String response;
     try {
-      response = willClient.talkToWill(event);
-      if (response == null) {
+      final ResponseModel model = willClient.talkToWill(event);
+      if (!model.isMessageEmpty()) {
+        response = model.getMessages().stream().collect(Collectors.joining("\n"));
+      } else if (model.getData() == null) {
         response = "薇兒不理你耶...";
       } else {
-        response = "薇兒說：\n" + response;
+        response = "薇兒說：\n" + model.getData();
       }
     } catch (WillException e) {
       response = "打開的方式好像不對喔！薇兒說：\n" + e.getMessage();
