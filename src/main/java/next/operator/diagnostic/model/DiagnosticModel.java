@@ -64,9 +64,9 @@ public class DiagnosticModel {
     sb.append("檢查的結果，發現");
     switch (listStatus) {
       case 1:
-        sb.append("這是不安全的網站").append("\n");
-        risk(sb);
-        sb.append("強烈建議不要點！");
+        sb.append("這是不安全的網站！！").append("\n");
+        hasRisk(sb);
+        sb.append("真心建議不要點！");
         break;
       case 2:
         sb.append("未找到任何不安全的內容～");
@@ -74,30 +74,34 @@ public class DiagnosticModel {
         break;
       case 3:
         sb.append("這個網站的部分網頁不安全").append("\n");
-        risk(sb);
+        hasRisk(sb);
         sb.append("人品好或防毒好的話才可以點！");
         break;
       case 4:
         sb.append("這個網站含有大量內容，無法完全保證安全").append("\n");
-        risk(sb);
-        sb.append("裡面的網址建議也送上來讓我檢查喔！");
+        hasRisk(sb);
+        sb.append("裡面的網址最好也送上來讓我檢查喔！");
         break;
       case 7:
         sb.append("這個網站代管的檔案不是常見的下載項目").append("\n");
-        risk(sb);
+        hasRisk(sb);
         sb.append("建議不要下載任何片子！");
         break;
       default:
-        sb.append("估狗大神給的結果我認不得QQ list_status:").append(listStatus);
-        risk(sb);
-        sb.append("不太清楚危不危險QQ");
+        sb.append("估狗大神給的結果我認不得耶QQ... list_status:").append(listStatus);
+        if (hasRisk(sb)) {
+          sb.append("不過看起來沒什麼風險，應該可以安心瀏覽喔");
+        } else {
+          sb.append("而且有一些風險項目，請酌情點閱喔！");
+        }
         break;
     }
 
     return sb.toString();
   }
 
-  private void risk(StringBuilder sb) {
+  /** 存在風險與否, 若有則加上相關風險訊息 */
+  private boolean hasRisk(StringBuilder sb) {
     if (malware || unwanted || social || malwareDownload || unwantedDownload || unknownDownload) {
       sb.append("可能的風險為以下").append("\n");
       if (malware) {
@@ -118,6 +122,9 @@ public class DiagnosticModel {
       if (unknownDownload) {
         sb.append("‧包含可疑或不明軟體").append("\n");
       }
+      return true;
+    } else {
+      return false;
     }
   }
 }
