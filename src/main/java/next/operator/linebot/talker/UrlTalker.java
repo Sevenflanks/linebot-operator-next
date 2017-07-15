@@ -30,7 +30,7 @@ public class UrlTalker implements RespondentReadable {
   @Autowired
   private DiagnosticClient diagnosticClient;
 
-  final Pattern readPattern = Pattern.compile("(http[s]?|ftp):\\/\\/[^\\s]*+");
+  final Pattern readPattern = Pattern.compile("(http[s]?|ftp)://[^\\s]*+");
 
   @Override
   public boolean isReadable(String message) {
@@ -70,4 +70,5 @@ public class UrlTalker implements RespondentReadable {
       return "檢查網址安全性的功能壞掉嚕，快叫工程師來加班！\n" + e.getClass().getSimpleName() + ":" + e.getMessage();
     }
   }
+
 }
