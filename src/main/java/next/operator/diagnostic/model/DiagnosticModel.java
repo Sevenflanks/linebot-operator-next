@@ -17,6 +17,7 @@ public class DiagnosticModel {
    * 2: 未找到任何不安全的內容
    * 3: 這個網站的部分網頁不安全
    * 4: 這個網站含有大量內容，無法完全保證安全
+   * 5: 沒有個可用的資料
    * 7: 這個網站代管的檔案不是常見的下載項目
    */
   @JsonProperty("list_status")
@@ -82,13 +83,18 @@ public class DiagnosticModel {
         hasRisk(sb);
         sb.append("裡面的網址最好也送上來讓我檢查喔！");
         break;
+      case 5:
+        sb.append("估狗大神好像沒有針對這個網站進行診斷").append("\n");
+        hasRisk(sb);
+        sb.append("閱覽有賺有賠，點下去前請仔細閱讀使用說明書");
+        break;
       case 7:
         sb.append("這個網站代管的檔案不是常見的下載項目").append("\n");
         hasRisk(sb);
         sb.append("建議不要下載任何片子！");
         break;
       default:
-        sb.append("估狗大神給的結果我認不得耶QQ... list_status:").append(listStatus);
+        sb.append("估狗大神給的結果我認不得耶QQ... list_status:").append(listStatus).append("\n");
         if (hasRisk(sb)) {
           sb.append("不過看起來沒什麼風險，應該可以安心瀏覽喔");
         } else {
