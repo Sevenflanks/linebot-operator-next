@@ -2,10 +2,15 @@ package next.operator.linebot.service;
 
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.source.UnknownSource;
+import com.linecorp.bot.model.message.TextMessage;
 import lombok.extern.slf4j.Slf4j;
 import next.operator.GenericTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.Instant;
+import java.util.Optional;
 
 @Slf4j
 public class RespondentServiceTest extends GenericTest {
@@ -36,8 +41,8 @@ public class RespondentServiceTest extends GenericTest {
 
   private void print(String commend) {
     final MessageEvent<TextMessageContent> event =
-        new MessageEvent<TextMessageContent>(null, null, new TextMessageContent(null, commend), null);
-    System.out.println(respondentService.response(event).getText());
+        new MessageEvent<>("test-reply-token", new UnknownSource(), new TextMessageContent("test-msg", commend), Instant.now());
+    Optional.ofNullable(respondentService.response(event)).map(TextMessage::getText).ifPresent(System.out::println);
   }
 
 }

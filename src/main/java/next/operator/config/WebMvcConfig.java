@@ -1,5 +1,6 @@
 package next.operator.config;
 
+import com.linecorp.bot.spring.boot.LineBotWebMvcConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,7 +12,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 import java.util.List;
 
@@ -19,7 +20,18 @@ import java.util.List;
 @EnableWebMvc
 @Primary
 @ComponentScan(basePackages = {"next.operator.**.web"}, useDefaultFilters = false, includeFilters = @Filter({Controller.class}))
-public class WebMvcConfig extends WebMvcConfigurerAdapter {
+public class WebMvcConfig extends LineBotWebMvcConfigurer {
+
+	@Bean
+	@Primary
+	public com.linecorp.bot.spring.boot.interceptor.LineBotServerInterceptor lineBotServerInterceptor() {
+		return new next.operator.config.linebot.LineBotServerInterceptor ();
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(lineBotServerInterceptor());
+	}
 
 	@Autowired
 	private WebObjectMapper objectMapper;
