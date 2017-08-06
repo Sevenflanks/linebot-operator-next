@@ -46,28 +46,29 @@ public class SubscriptionJob {
     for (Subscription subscription : subscriptions) {
       subscribe(subscription);
     }
+    log.info("subscribing job success");
   }
 
   @Transactional
   public void subscribe(Subscription subscription) {
     final Instant next = toNext(subscription.getStartTime(), subscription.getFixedRate());
     subscription.setStartTime(next);
-
-    log.info("subscribing {}'s job, start:{}, fix:{}, msg:{}, to:{}",
-        subscription.getSubscriber().getSubscriberName(),
-        subscription.getStartTime(),
-        subscription.getFixedRate(),
-        subscription.getMsg(),
-        subscription.getSubscriber().getSubscribeTo());
-
     taskScheduler.scheduleAtFixedRate(() -> subscriptionService.push(subscription.getId()),
         Date.from(subscription.getStartTime()),
         subscription.getFixedRate().toMillis()
     );
     subscriptionDao.save(subscription);
+
+    log.info("subscribed {}'s job, start:{}, fix:{}, msg:{}, to:{}",
+        subscription.getSubscriber().getSubscriberName(),
+        subscription.getStartTime(),
+        subscription.getFixedRate(),
+        subscription.getMsg(),
+        subscription.getSubscriber().getSubscribeTo());
   }
 
   public static Instant toNext(Instant time, Duration d) {
+    log.debug("calc next time: {}, {}", time, d);
     Instant next = time;
     while (Instant.now().isAfter(next)) {
       next = next.plus(d);
