@@ -9,6 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public class CurrencyJob {
   private CurrencyExtRateDataLoader currencyExtRateDataLoader;
 
   @Scheduled(fixedRate = 10 * 60 * 1000)
+  @PostConstruct
   public void load() {
     log.debug("loading CurrencyExtRateData");
     try {
