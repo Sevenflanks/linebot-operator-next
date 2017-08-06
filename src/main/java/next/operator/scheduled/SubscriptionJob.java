@@ -66,7 +66,7 @@ public class SubscriptionJob {
     // 判斷上一次的排程有沒有執行過(六十秒緩衝判斷)
     final Instant prev = next.minus(subscription.getFixedRate());
     if (subscription.getLastPushTime() == null) {
-      subscriptionService.push(subscription.getId(), "這是你剛剛訂閱的訊息:\n");
+      subscriptionService.push(subscription.getId(), "這是你剛剛訂閱的訊息:" + subscription + "\n");
     } else if (subscription.getLastPushTime().plusSeconds(60).isBefore(prev)) {
       subscriptionService.push(subscription.getId(),
           "拍謝，剛剛睡著了啦，這是原本應該要在" +
