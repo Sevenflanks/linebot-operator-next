@@ -22,6 +22,7 @@ import javax.validation.ValidationException;
 import javax.validation.Validator;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -51,6 +52,15 @@ public class SubscriptionService {
   }
 
   @Transactional
+  public void deSubscribe(Source source, Long id) {
+    final Subscription subscription = Optional.ofNullable(subscriptionDao.findOne(id))
+        .orElseThrow(() -> new ValidationException("ID:" + id + "|這一則訂閱不存在喔！"));
+    if (!subscription.getSubscriber().getSubscriberId().equals(source.getUserId())) {
+      throw  new ValidationException("這不是你訂閱的東西喔！");
+    }
+  }
+
+  @Transactional
   public Subscription subscribe(Source source, Instant startTime, Duration fixRate, String msg) {
     final Subscription subscription = new Subscription();
     final Subscriber subscriber = new Subscriber();
@@ -71,9 +81,9 @@ public class SubscriptionService {
   public Subscription subscribe(Subscription subscription) {
 
     // 檢查是否有此人註冊過的消息
-    final Subscription dbSubscription = subscriptionDao.findBySubscriber_SubscriberId(subscription.getSubscriber().getSubscriberId());
-    if (dbSubscription != null) {
-      throw new ValidationException(subscription.getSubscriber().getSubscriberName() + "已經有訂閱的消息，目前每人只能訂閱一種消息喔！");
+    final List<Subscription> dbSubscriptions = subscriptionDao.findBySubscriber_SubscriberId(subscription.getSubscriber().getSubscriberId());
+    if (dbSubscriptions.size() >= 2) {
+      throw new ValidationException(subscription.getSubscriber().getSubscriberName() + "已經有訂閱的消息，目前每人只能訂閱兩個消息喔！");
     }
 
     // 欄位檢核
@@ -85,11 +95,18 @@ public class SubscriptionService {
         .map(ValidationUtils::from);
     ValidationUtils.requiredMsgsEmpty(subscriptionMsgs, subscriberMsgs);
 
+    log.info("subscribed Subscription:{}" + subscription);
     return subscriptionDao.save(subscription);
   }
 
   @Transactional
   public void push(Long id) {
+    push(id, null);
+  }
+
+  @Transactional
+  public void push(Long id, String prefix) {
+    log.info("pushing subscription, ID:{}", id);
     final Subscription subscription = subscriptionDao.findOne(id);
 
     // 產生一個假的event
@@ -110,7 +127,7 @@ public class SubscriptionService {
     );
 
     final String response = Optional.ofNullable(respondentService.response(event)).map(TextMessage::getText).orElse(subscription.getMsg());
-    final String message = "以下是" + subscription.getSubscriber().getSubscriberName() + "訂閱的消息\n" + response;
+    final String message = Optional.ofNullable(prefix).orElse("") + "以下是" + subscription.getSubscriber().getSubscriberName() + "訂閱的消息\n" + response;
     client.pushMessage(new PushMessage(subscription.getSubscriber().getSubscribeTo(), new TextMessage(message)));
     subscription.setLastPushTime(Instant.now());
     subscriptionDao.save(subscription);

@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 @SuppressWarnings("serial")
 @Entity
@@ -48,4 +50,10 @@ public class Subscription extends GenericEntity {
   @Size(min = 1, max = 255)
   private String msg;
 
+  @Override
+  public String toString() {
+    return "ID:" + id + "|於" +
+        DateTimeFormatter.ISO_ZONED_DATE_TIME.format(startTime.atOffset(ZoneOffset.ofHours(8))) +
+        "開始，每" + fixedRate.getSeconds() + "秒執行一次:【" + msg + "】";
+  }
 }
