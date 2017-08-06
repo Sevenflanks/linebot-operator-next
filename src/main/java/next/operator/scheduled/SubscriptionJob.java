@@ -1,6 +1,8 @@
 package next.operator.scheduled;
 
 import lombok.extern.slf4j.Slf4j;
+import next.operator.currency.service.CurrencyService;
+import next.operator.searchoil.service.OilService;
 import next.operator.subscription.dao.SubscriptionDao;
 import next.operator.subscription.entity.Subscription;
 import next.operator.subscription.service.SubscriptionService;
@@ -41,7 +43,12 @@ public class SubscriptionJob {
    */
   @EventListener
   @Transactional
-  public void subscribe(ContextRefreshedEvent event) {
+  public void subscribe(ContextRefreshedEvent event) throws InterruptedException {
+    // 等待所有查詢資料回來
+    while(CurrencyService.exrateDatas == null || OilService.oilPriceDatas == null) {
+      Thread.sleep(1000);
+    }
+
     final List<Subscription> subscriptions = subscriptionDao.findAll();
 
     log.info("subscribing jobs, size:{}", subscriptions.size());
