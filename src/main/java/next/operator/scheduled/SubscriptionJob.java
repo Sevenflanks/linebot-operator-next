@@ -57,7 +57,7 @@ public class SubscriptionJob {
 
     // 判斷上一次的排程有沒有執行過(六十秒緩衝判斷)
     final Instant prev = next.minus(subscription.getFixedRate());
-    if (subscription.getLastPushTime() != null && subscription.getLastPushTime().plusSeconds(60).isBefore(prev)) {
+    if (subscription.getLastPushTime() == null || subscription.getLastPushTime().plusSeconds(60).isBefore(prev)) {
       subscriptionService.push(subscription.getId(),
           "拍謝，剛剛睡著了啦，這是原本應該要在" +
               DateTimeFormatter.ISO_ZONED_DATE_TIME.format(prev.atOffset(ZoneOffset.ofHours(8))) +
