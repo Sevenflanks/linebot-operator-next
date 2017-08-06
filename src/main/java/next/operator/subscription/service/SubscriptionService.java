@@ -85,7 +85,7 @@ public class SubscriptionService {
   @Transactional
   public void push(Long id) {
     final Subscription subscription = subscriptionDao.findOne(id);
-    final String message = "以下是" + subscription.getSubscriber().getSubscriberName() + "訂閱的消息";
+    final String message = "以下是" + subscription.getSubscriber().getSubscriberName() + "訂閱的消息\n" + subscription.getMsg();
     // TODO
     client.pushMessage(new PushMessage(subscription.getSubscriber().getSubscribeTo(), new TextMessage(message)));
     subscription.setLastPushTime(Instant.now());
