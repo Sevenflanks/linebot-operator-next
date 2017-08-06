@@ -17,13 +17,13 @@ public class EntityListener {
 
   @PreUpdate
   public void onPreUpdate(GenericEntity entity) {
-    log.info("updating {}", entity);
+    log.info("updating entity of {} id:{}", entity.getClass().getName(), entity.getId());
     entity.setModifyTime(LocalDateTime.now());
   }
 
   @PreRemove
   public void onPreRemove(GenericEntity entity) {
-    log.info("removing {}", entity);
+    log.info("removing entity of {} id:{}", entity.getClass().getName(), entity.getId());
   }
 
 }
