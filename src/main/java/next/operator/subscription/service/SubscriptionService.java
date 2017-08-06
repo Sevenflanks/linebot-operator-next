@@ -47,7 +47,7 @@ public class SubscriptionService {
 
   @Transactional
   public void deSubscribe(Source source) {
-    Optional.ofNullable(subscriptionDao.findBySubscriber_SubscriberId(source.getSenderId()))
+    Optional.ofNullable(subscriptionDao.findBySubscriber_SubscriberId(source.getUserId()))
         .ifPresent(subscriptionDao::delete);
   }
 
@@ -55,7 +55,7 @@ public class SubscriptionService {
   public void deSubscribe(Source source, Long id) {
     final Subscription subscription = Optional.ofNullable(subscriptionDao.findOne(id))
         .orElseThrow(() -> new ValidationException("ID:" + id + ")這一則訂閱不存在喔！"));
-    if (!subscription.getSubscriber().getSubscriberId().equals(source.getSenderId())) {
+    if (!subscription.getSubscriber().getSubscriberId().equals(source.getUserId())) {
       throw  new ValidationException("這不是你訂閱的東西喔！");
     }
   }
@@ -65,7 +65,7 @@ public class SubscriptionService {
     final Subscription subscription = new Subscription();
     final Subscriber subscriber = new Subscriber();
 
-    subscriber.setSubscriberId(source.getSenderId());
+    subscriber.setSubscriberId(source.getUserId());
     subscriber.setSubscriberName(userDao.getCurrentUserName());
     subscriber.setSubscribeTo(source.getSenderId());
 
@@ -83,7 +83,7 @@ public class SubscriptionService {
     // 檢查是否有此人註冊過的消息
     final List<Subscription> dbSubscriptions = subscriptionDao.findBySubscriber_SubscriberId(subscription.getSubscriber().getSubscriberId());
     if (dbSubscriptions.size() >= 3) {
-      throw new ValidationException(subscription.getSubscriber().getSubscriberName() + "不能再訂閱囉，目前每個頻道只能訂閱三個消息！");
+      throw new ValidationException(subscription.getSubscriber().getSubscriberName() + "不能再訂閱囉，目前每個人只能訂閱三個消息！");
     }
 
     // 欄位檢核

@@ -92,7 +92,7 @@ public class SubscriptionExecutor implements FunctionExecutable {
   }
 
   private String doFindSubcriped(MessageEvent<TextMessageContent> event) {
-    final List<Subscription> dbSubscriptions = subscriptionDao.findBySubscriber_SubscriberId(event.getSource().getSenderId());
+    final List<Subscription> dbSubscriptions = subscriptionDao.findBySubscriber_SubscriberId(event.getSource().getUserId());
     if (dbSubscriptions.isEmpty()) {
       return userDao.getCurrentUserName() + "你目前沒有訂閱任何訊息喔";
     } else {
