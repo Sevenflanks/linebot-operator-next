@@ -22,12 +22,16 @@ public class TestJob extends GenericTest {
   public void test() throws InterruptedException {
     taskScheduler.scheduleAtFixedRate(() -> {
       log.info("Now:{}", LocalDateTime.now());
-    }, Date.from(Instant.now()), Duration.ofSeconds(1).toNanos());
+    }, Date.from(Instant.now()), Duration.ofSeconds(1).toMillis());
     taskScheduler.scheduleAtFixedRate(() -> {
       log.info("Fix-0-NANO:{}", LocalDateTime.now());
-    }, Date.from(LocalDateTime.now().plusSeconds(1).withNano(0).toInstant(ZoneOffset.ofHours(8))), Duration.ofSeconds(1).toNanos());
+    }, Date.from(LocalDateTime.now().plusSeconds(1).withNano(0).toInstant(ZoneOffset.ofHours(8))), Duration.ofSeconds(1).toMillis());
 
-    Thread.sleep(Duration.ofSeconds(10).toNanos());
+    Thread.sleep(Duration.ofSeconds(10).toMillis());
+  }
+
+  public static void main(String[] args) {
+    System.out.println(Duration.ofSeconds(1).toMillis());
   }
 
 }

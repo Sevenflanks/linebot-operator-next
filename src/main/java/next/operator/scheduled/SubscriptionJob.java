@@ -62,7 +62,7 @@ public class SubscriptionJob {
 
     taskScheduler.scheduleAtFixedRate(() -> subscriptionService.push(subscription.getId()),
         Date.from(subscription.getStartTime()),
-        subscription.getFixedRate().getNano()
+        subscription.getFixedRate().toMillis()
     );
     subscriptionDao.save(subscription);
   }
