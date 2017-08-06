@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 @Slf4j
 public abstract class ValidationUtils {
 
+  @SafeVarargs
   public static void requiredMsgsEmpty(Stream<String>... msgs) {
     final List<String> allMsgs = Stream.of(msgs)
         .flatMap(Function.identity())
@@ -26,6 +27,7 @@ public abstract class ValidationUtils {
     }
   }
 
+  @SafeVarargs
   public static void requiredMsgsEmpty(List<String>... msgs) {
     final List<String> allMsgs = Stream.of(msgs)
         .flatMap(List::stream)
