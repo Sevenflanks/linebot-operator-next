@@ -52,7 +52,7 @@ public class Subscription extends GenericEntity {
 
   @Override
   public String toString() {
-    return "ID:" + id + "|於" +
+    return "ID:" + id + ")於" +
         DateTimeFormatter.ISO_ZONED_DATE_TIME.format(startTime.atOffset(ZoneOffset.ofHours(8))) +
         "開始，每" + fixedRate.getSeconds() + "秒執行一次:【" + msg + "】";
   }

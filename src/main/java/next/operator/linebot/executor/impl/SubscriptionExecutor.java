@@ -78,7 +78,7 @@ public class SubscriptionExecutor implements FunctionExecutable {
     final String order = args[0];
 
     if (ORDER_DELETE.contains(order)) {
-      final Long id = tryArg(args, 2, Uncheck.apply(Long::parseLong))
+      final Long id = tryArg(args, 1, Uncheck.apply(Long::parseLong))
           .orElseThrow(() -> new ValidationException("需要第二個參數喔，而且要是個數字"));
       subscriptionService.deSubscribe(event.getSource(), id);
       return userDao.getCurrentUserName() + "已經把你其中一個訂閱取消了！";
