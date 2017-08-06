@@ -55,6 +55,7 @@ public class SubscriptionService {
   public void deSubscribe(Source source, Long id) {
     final Subscription subscription = Optional.ofNullable(subscriptionDao.findOne(id))
         .orElseThrow(() -> new ValidationException("ID:" + id + ")這一則訂閱不存在喔！"));
+    subscriptionDao.delete(subscription);
     if (!subscription.getSubscriber().getSubscriberId().equals(source.getUserId())) {
       throw  new ValidationException("這不是你訂閱的東西喔！");
     }
