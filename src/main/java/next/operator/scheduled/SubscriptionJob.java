@@ -5,11 +5,12 @@ import next.operator.subscription.dao.SubscriptionDao;
 import next.operator.subscription.entity.Subscription;
 import next.operator.subscription.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.sql.Date;
 import java.time.Duration;
 import java.time.Instant;
@@ -38,9 +39,9 @@ public class SubscriptionJob {
    * 1. 是否有已經過期的訊息尚未發送
    * 2. 註冊排程
    */
-  @PostConstruct
+  @EventListener
   @Transactional
-  public void subscribe() {
+  public void subscribe(ContextRefreshedEvent event) {
     final List<Subscription> subscriptions = subscriptionDao.findAll();
 
     log.info("subscribing jobs, size:{}", subscriptions.size());
