@@ -12,6 +12,8 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -43,6 +45,11 @@ public class ServiceConfig {
       headers.add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
       return execution.execute(request, body);
     }
+  }
+
+  @Bean
+  public Validator validator() {
+    return Validation.buildDefaultValidatorFactory().getValidator();
   }
 
   @Bean

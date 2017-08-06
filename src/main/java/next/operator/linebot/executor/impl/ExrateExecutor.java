@@ -1,6 +1,8 @@
 package next.operator.linebot.executor.impl;
 
 import com.google.common.primitives.Doubles;
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.currency.model.CurrencyExrateModel;
 import next.operator.currency.service.CurrencyService;
 import next.operator.linebot.executor.FunctionExecutable;
@@ -34,7 +36,7 @@ public class ExrateExecutor implements FunctionExecutable {
   final DecimalFormat decimalFormat = new DecimalFormat("#,###,###,##0.0#####");
   final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
   @Override
-  public String execute(String... args) {
+  public String execute(MessageEvent<TextMessageContent> event, String... args) {
     if (args.length == 2) {
       final CurrencyExrateModel exrate = currencyService.getExrate(args[0], args[1]);
       return "匯率查詢：" +

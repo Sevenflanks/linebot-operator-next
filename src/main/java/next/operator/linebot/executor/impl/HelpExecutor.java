@@ -1,5 +1,7 @@
 package next.operator.linebot.executor.impl;
 
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.linebot.executor.FunctionExecutable;
 import next.operator.linebot.executor.HelperExecutable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class HelpExecutor implements HelperExecutable {
   }
 
   @Override
-  public String execute(String... args) {
+  public String execute(MessageEvent<TextMessageContent> event, String... args) {
     return "目前所有可以用的語法如下：\n" +
     executors.stream()
         .map(FunctionExecutable::structures)

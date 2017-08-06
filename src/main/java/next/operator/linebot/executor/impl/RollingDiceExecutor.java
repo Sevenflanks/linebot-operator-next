@@ -3,6 +3,8 @@ package next.operator.linebot.executor.impl;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.linebot.executor.FunctionExecutable;
 import next.operator.rolldice.model.DiceModel;
 import next.operator.rolldice.service.DiceService;
@@ -37,7 +39,7 @@ public class RollingDiceExecutor implements FunctionExecutable {
   }
 
   @Override
-  public String execute(String... args) {
+  public String execute(MessageEvent<TextMessageContent> event, String... args) {
     StringBuilder sb = new StringBuilder();
     sb.append(userDao.getCurrentUserName()).append("正在執骰\n");
 

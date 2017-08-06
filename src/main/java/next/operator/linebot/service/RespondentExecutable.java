@@ -1,5 +1,8 @@
 package next.operator.linebot.service;
 
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
+
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -12,7 +15,7 @@ public interface RespondentExecutable {
   String[] structures();
 
   /** 執行 */
-  String execute(String... args);
+  String execute(MessageEvent<TextMessageContent> event, String... args);
 
   default String structure() {
     return Stream.of(structures()).collect(Collectors.joining("\n"));

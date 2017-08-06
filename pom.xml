@@ -45,10 +45,10 @@
             <!--<groupId>org.springframework.boot</groupId>-->
             <!--<artifactId>spring-boot-starter-security</artifactId>-->
         <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-data-jpa</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
 
         <!-- spring-boot-admin -->
         <!--<dependency>-->
@@ -57,6 +57,12 @@
             <!--<version>1.5.2</version>-->
         <!--</dependency>-->
 
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-java8</artifactId>
+        </dependency>
+
         <!-- HikariCP -->
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -64,11 +70,28 @@
             <version>2.6.1</version>
         </dependency>
 
+        <!-- JDBC -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4.1212</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.4.1208-jdbc42-atlassian-hosted</version>
+        </dependency>
+
+        <!-- JSR-303 Bean Validation -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
         </dependency>
 
         <!-- jackson -->

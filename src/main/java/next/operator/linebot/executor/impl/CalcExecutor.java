@@ -1,5 +1,7 @@
 package next.operator.linebot.executor.impl;
 
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.calculate.service.CalculateService;
 import next.operator.linebot.executor.FunctionExecutable;
 import next.operator.user.dao.UserDao;
@@ -24,7 +26,7 @@ public class CalcExecutor implements FunctionExecutable {
   }
 
   @Override
-  public String execute(String... args) {
+  public String execute(MessageEvent<TextMessageContent> event, String... args) {
 
     StringBuilder sb = new StringBuilder();
     sb.append("算好了！").append(userDao.getCurrentUserName()).append("剛剛給的算式答案是這樣：\n");

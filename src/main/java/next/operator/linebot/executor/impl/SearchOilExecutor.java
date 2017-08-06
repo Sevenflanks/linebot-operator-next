@@ -1,5 +1,7 @@
 package next.operator.linebot.executor.impl;
 
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.linebot.executor.FunctionExecutable;
 import next.operator.searchoil.service.OilService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class SearchOilExecutor implements FunctionExecutable {
 
   final DecimalFormat decimalFormat = new DecimalFormat("#0.00");
   @Override
-  public String execute(String... args) {
+  public String execute(MessageEvent<TextMessageContent> event, String... args) {
     return "今日每公升油價資訊如下：\n" +
         oilService.get().stream().map(m -> m.getProvider() + "：" + decimalFormat.format(m.getPrice()) + "元").collect(Collectors.joining("\n"));
   }

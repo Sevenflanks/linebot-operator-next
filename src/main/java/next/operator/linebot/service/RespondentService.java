@@ -47,7 +47,7 @@ public class RespondentService {
   public TextMessage response(MessageEvent<TextMessageContent> event) {
     final String message = event.getMessage().getText();
     if (message.trim().startsWith("/") || message.trim().startsWith("！")) {
-      return new TextMessage(commend(message));
+      return new TextMessage(commend(event, message));
     } else if (WillClient.pattern.matcher(message).find()) {
       return toWill(event);
     } else {
@@ -82,14 +82,14 @@ public class RespondentService {
   }
 
   /** 處理所有/開頭進來的, 被視為命令 */
-  private String commend(String message) {
+  private String commend(MessageEvent<TextMessageContent> event, String message) {
     final String[] commend = message.trim().split(" ");
     final String method = commend[0];
     final String[] args = Arrays.copyOfRange(commend, 1, commend.length);
     return executors.stream()
         .filter(e -> Stream.of(e.structures()).anyMatch(s -> s.split(" ")[0].equals(method)))
         .findAny()
-        .map(e -> e.execute(args))
+        .map(e -> e.execute(event, args))
         .orElseThrow(() -> new ValidationException(userDao.getCurrentUserName() + "我不認識【" + message + "】這個指令喔，你要不要找別人來試試看？"));
   }
 
