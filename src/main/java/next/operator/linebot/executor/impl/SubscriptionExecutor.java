@@ -15,6 +15,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class SubscriptionExecutor implements FunctionExecutable {
@@ -38,7 +40,7 @@ public class SubscriptionExecutor implements FunctionExecutable {
 
   @Override
   public String execute(MessageEvent<TextMessageContent> event, String... args) {
-    if (args.length != 3) {
+    if (args.length < 3) {
       subscriptionService.deSubscribe(event.getSource());
       return userDao.getCurrentUserName() + "已經把你的訂閱取消了！";
     } else {
@@ -54,7 +56,7 @@ public class SubscriptionExecutor implements FunctionExecutable {
       } catch (NumberFormatException e) {
         throw new ValidationException("時間間隔的參數好像有問題歐，必須要是一個數字！");
       }
-      final String msg = args[2];
+      final String msg = Stream.of(args).skip(2).collect(Collectors.joining(" "));
 
       final Subscription subscription = subscriptionService.subscribe(event.getSource(), startTime, fixRate, msg);
       subscriptionJob.subscribe(subscription);

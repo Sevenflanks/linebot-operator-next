@@ -3,10 +3,13 @@ package next.operator.subscription.service;
 import com.google.common.collect.Sets;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.source.Source;
 import com.linecorp.bot.model.message.TextMessage;
 import lombok.extern.slf4j.Slf4j;
 import next.operator.common.validation.ValidationUtils;
+import next.operator.linebot.service.RespondentService;
 import next.operator.subscription.dao.SubscriptionDao;
 import next.operator.subscription.entity.Subscriber;
 import next.operator.subscription.entity.Subscription;
@@ -37,6 +40,9 @@ public class SubscriptionService {
 
   @Autowired
   private LineMessagingClient client;
+
+  @Autowired
+  private RespondentService respondentService;
 
   @Transactional
   public void deSubscribe(Source source) {
@@ -85,8 +91,26 @@ public class SubscriptionService {
   @Transactional
   public void push(Long id) {
     final Subscription subscription = subscriptionDao.findOne(id);
-    final String message = "以下是" + subscription.getSubscriber().getSubscriberName() + "訂閱的消息\n" + subscription.getMsg();
-    // TODO
+
+    // 產生一個假的event
+    final MessageEvent<TextMessageContent> event = new MessageEvent<TextMessageContent>(
+        null,
+        new Source() {
+          @Override
+          public String getUserId() {
+            return subscription.getSubscriber().getSubscriberId();
+          }
+          @Override
+          public String getSenderId() {
+            return subscription.getSubscriber().getSubscribeTo();
+          }
+        },
+        new TextMessageContent(null, subscription.getMsg()),
+        Instant.now()
+    );
+
+    final String response = Optional.ofNullable(respondentService.response(event)).map(TextMessage::getText).orElse(subscription.getMsg());
+    final String message = "以下是" + subscription.getSubscriber().getSubscriberName() + "訂閱的消息\n" + response;
     client.pushMessage(new PushMessage(subscription.getSubscriber().getSubscribeTo(), new TextMessage(message)));
     subscription.setLastPushTime(Instant.now());
     subscriptionDao.save(subscription);
