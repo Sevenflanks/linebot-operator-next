@@ -5,6 +5,7 @@ import next.operator.searchoil.model.OliPriceModel;
 import next.operator.searchoil.service.OilPriceLoader;
 import next.operator.searchoil.service.OilService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
+@Order(2)
 public class OilJob {
 
   @Autowired

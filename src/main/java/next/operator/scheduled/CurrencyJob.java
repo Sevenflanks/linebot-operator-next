@@ -5,6 +5,7 @@ import next.operator.currency.model.CurrencyExrateModel;
 import next.operator.currency.service.CurrencyExtRateDataLoader;
 import next.operator.currency.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
+@Order(1)
 public class CurrencyJob {
 
   @Autowired
