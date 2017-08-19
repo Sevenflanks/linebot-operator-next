@@ -44,9 +44,13 @@ public class RespondentService {
   @Autowired
   private UserDao userDao;
 
+  public static boolean isCommand(String message) {
+    return message.trim().startsWith("/") || message.trim().startsWith("！");
+  }
+
   public TextMessage response(MessageEvent<TextMessageContent> event) {
     final String message = event.getMessage().getText();
-    if (message.trim().startsWith("/") || message.trim().startsWith("！")) {
+    if (isCommand(message)) {
       return new TextMessage(commend(event, message));
     } else if (WillClient.pattern.matcher(message).find()) {
       return toWill(event);

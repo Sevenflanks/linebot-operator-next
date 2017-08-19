@@ -110,24 +110,30 @@ public class SubscriptionService {
     log.info("pushing subscription, ID:{}", id);
     final Subscription subscription = subscriptionDao.findOne(id);
 
-    // 產生一個假的event
-    final MessageEvent<TextMessageContent> event = new MessageEvent<TextMessageContent>(
-        null,
-        new Source() {
-          @Override
-          public String getUserId() {
-            return subscription.getSubscriber().getSubscriberId();
-          }
-          @Override
-          public String getSenderId() {
-            return subscription.getSubscriber().getSubscribeTo();
-          }
-        },
-        new TextMessageContent(null, subscription.getMsg()),
-        Instant.now()
-    );
+    final String response;
+    // 如果是指令型，則自動觸發指令
+    if (RespondentService.isCommand(subscription.getMsg())) {
+      // 產生一個假的event
+      final MessageEvent<TextMessageContent> event = new MessageEvent<>(null,
+          new Source() {
+            @Override
+            public String getUserId() {
+              return subscription.getSubscriber().getSubscriberId();
+            }
+            @Override
+            public String getSenderId() {
+              return subscription.getSubscriber().getSubscribeTo();
+            }
+          },
+          new TextMessageContent(null, subscription.getMsg()),
+          Instant.now()
+      );
 
-    final String response = Optional.ofNullable(respondentService.response(event)).map(TextMessage::getText).orElse(subscription.getMsg());
+      response = Optional.ofNullable(respondentService.response(event)).map(TextMessage::getText).orElse(subscription.getMsg());
+    } else {
+      response = subscription.getMsg();
+    }
+
     final String message = Optional.ofNullable(prefix).orElse("") + "以下是" + subscription.getSubscriber().getSubscriberName() + "訂閱的消息\n" + response;
     client.pushMessage(new PushMessage(subscription.getSubscriber().getSubscribeTo(), new TextMessage(message)));
     subscription.setLastPushTime(Instant.now());
