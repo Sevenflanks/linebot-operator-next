@@ -37,6 +37,9 @@ public class RespondentServiceTest extends GenericTest {
     print("/oil");
 
     print("W:1101");
+    print("有沒有聽到");
+    print("懂不懂");
+    print("行不行");
   }
 
   private void print(String commend) {

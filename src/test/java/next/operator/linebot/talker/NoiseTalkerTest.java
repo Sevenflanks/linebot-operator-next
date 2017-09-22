@@ -40,7 +40,6 @@ public class NoiseTalkerTest extends GenericTest {
 		System.out.println(Arrays.toString(chineseTokens.run("貓是不是蘿莉控")));
 		System.out.println(Arrays.toString(chineseTokens.run("蘿莉不蘿莉是貓")));
 
-
 	}
 
 }

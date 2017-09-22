@@ -8,9 +8,9 @@ import next.operator.linebot.service.RespondentReadable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 回垃圾話用的
@@ -19,17 +19,24 @@ import java.util.regex.Pattern;
  */
 @Service
 public class NoiseTalker implements RespondentReadable {
+  public static final String[] SUFFIXES = {"", "喔", "唄", "啦", "唷"};
 
   @Autowired
   private ChineseTokens chineseTokens;
 
-  final Pattern readPattern = Pattern.compile("([\\u4e00-\\u9fa5A-Za-z]+?)不(\\1[\\u4e00-\\u9fa5A-Za-z]*)");
-  final String[] response = {"", "不"};
-  final String[] suffixes = {"", "喔", "唄", "啦", "唷"};
+  @Autowired
+  private List<NoiscePattern> extraPatterns;
+
+  private ThreadLocal<NoisceMatcher> currentMached = new ThreadLocal<>();
 
   @Override
   public boolean isReadable(String message) {
-    return readPattern.matcher(message).find();
+    final Optional<NoisceMatcher> matched = extraPatterns.stream()
+        .map(np -> np.match(message))
+        .filter(NoisceMatcher::isMatched)
+        .findAny();
+    matched.ifPresent(currentMached::set);
+    return matched.isPresent();
   }
 
   @Override
@@ -39,12 +46,8 @@ public class NoiseTalker implements RespondentReadable {
 
   @Override
   public String talk(String message) {
-    final Matcher matcher = readPattern.matcher(message);
-    if (matcher.find()) {
-      final String keyWord = chineseTokens.run(matcher.group(2))[0];
-      return response[(int) (Math.random() * response.length)] + keyWord + suffixes[(int) (Math.random() * suffixes.length)];
-    } else {
-      return null;
-    }
+    final NoisceMatcher matcher = currentMached.get();
+    currentMached.remove();
+    return Optional.ofNullable(matcher).map(NoisceMatcher::response).orElse(null);
   }
 }
