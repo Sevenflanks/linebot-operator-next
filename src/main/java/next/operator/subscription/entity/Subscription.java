@@ -37,7 +37,7 @@ public class Subscription extends GenericEntity {
   @Label("間隔時間")
   @Column
   @NotNull
-  @DurationRange(minSeconds = 60*10)
+  @DurationRange(minSeconds = 10, maxSeconds = 7 * 24 * 60 * 60)
   private Duration fixedRate;
 
   @Label("最後推送時間")

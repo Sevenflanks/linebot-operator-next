@@ -14,10 +14,6 @@ public class SchedulingConfig {
 
   @Bean
   public TaskScheduler taskScheduler() {
-//    final ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
-//    taskScheduler.setPoolSize(20);
-//    taskScheduler.setThreadNamePrefix("Subscription-");
-
     final ConcurrentTaskScheduler taskScheduler = new ConcurrentTaskScheduler();
     return taskScheduler;
   }
