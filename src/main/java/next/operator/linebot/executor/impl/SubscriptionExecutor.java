@@ -10,6 +10,10 @@ import next.operator.subscription.dao.SubscriptionDao;
 import next.operator.subscription.entity.Subscription;
 import next.operator.subscription.service.SubscriptionService;
 import next.operator.user.dao.UserDao;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +45,65 @@ public class SubscriptionExecutor implements FunctionExecutable {
 
   static final List<String> ORDER_DELETE = Lists.newArrayList("delete", "刪");
   static final List<String> ORDER_DELETE_ALL = Lists.newArrayList("delete_all", "刪全部");
+
+  private static final Options options;
+  private static final CommandLineParser parser = new DefaultParser();
+
+  static {
+    options = new Options();
+
+    options.addOption(Option.builder("l")
+        .longOpt("查")
+        .hasArg(false)
+        .required(false)
+        .desc("查詢自己的所有訂閱")
+        .build());
+
+    options.addOption(Option.builder("s")
+        .longOpt("文")
+        .hasArg(true)
+        .numberOfArgs(1)
+        .optionalArg(false)
+        .required(false)
+        .desc("設定訂閱的內容，為純文字內容，若內容中含有空白則以\"\"包含")
+        .build());
+
+    options.addOption(Option.builder("t")
+        .longOpt("時")
+        .hasArg(true)
+        .numberOfArgs(1)
+        .optionalArg(false)
+        .required(false)
+        .desc("設定時間點，格式為yyyy-MM-ddTHH:mm")
+        .build());
+
+    options.addOption(Option.builder("d")
+        .longOpt("隔")
+        .hasArg(true)
+        .numberOfArgs(1)
+        .optionalArg(false)
+        .required(false)
+        .desc("設定時間間隔，為秒數")
+        .build());
+
+    options.addOption(Option.builder("i")
+        .longOpt("略")
+        .hasArg(true)
+        .numberOfArgs(2)
+        .optionalArg(false)
+        .required(false)
+        .desc("設定不出現此訂閱消息得時間，有兩個時間參數，需與空白間隔")
+        .build());
+
+    options.addOption(Option.builder("r")
+        .longOpt("刪")
+        .hasArg(true)
+        .numberOfArgs(1)
+        .optionalArg(true)
+        .required(false)
+        .desc("刪除訂閱，若輸入數字則為刪除特定ID的訂閱，若輸入ALL則為刪除所有自己的訂閱")
+        .build());
+  }
 
   @Override
   public String[] structures() {
