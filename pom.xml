@@ -134,6 +134,13 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- google api -->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-safebrowsing</artifactId>
+            <version>v4-rev27-1.22.0</version>
+        </dependency>
+
         <!-- test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
