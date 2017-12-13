@@ -41,21 +41,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-security</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-
-        <!-- spring-boot-admin -->
-        <!--<dependency>-->
-            <!--<groupId>de.codecentric</groupId>-->
-            <!--<artifactId>spring-boot-admin-starter-client</artifactId>-->
-            <!--<version>1.5.2</version>-->
-        <!--</dependency>-->
 
         <!-- Hibernate -->
         <dependency>
@@ -139,6 +128,12 @@
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-safebrowsing</artifactId>
             <version>v4-rev27-1.22.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ansj</groupId>
+            <artifactId>ansj_seg</artifactId>
+            <version>5.1.5</version>
         </dependency>
 
         <!-- test -->
