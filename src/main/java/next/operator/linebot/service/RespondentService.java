@@ -33,7 +33,7 @@ public class RespondentService {
   private List<RespondentExecutable> executors;
 
   @Autowired
-  private List<RespondentReadable> readers;
+  private List<RespondentTalkable> readers;
 
   @Autowired
   private LineMessagingClient client;

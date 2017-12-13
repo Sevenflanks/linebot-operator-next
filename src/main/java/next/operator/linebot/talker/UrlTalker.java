@@ -9,9 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import next.operator.diagnostic.client.DiagnosticClient;
 import next.operator.diagnostic.exception.DiagnosticException;
 import next.operator.diagnostic.model.DiagnosticModel;
-import next.operator.linebot.service.RespondentReadable;
+import next.operator.linebot.service.RespondentTalkable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
@@ -22,10 +21,12 @@ import java.util.regex.Pattern;
 
 /**
  * 若對話中出現網址, 則嘗試進行解析
+ *
+ * @deprecated 因為實在太吵了又沒啥路用，暫時封印 // FIXME
  */
 @Slf4j
-@Service
-public class UrlTalker implements RespondentReadable {
+//@Service
+public class UrlTalker implements RespondentTalkable {
 
   @Autowired
   private DiagnosticClient diagnosticClient;

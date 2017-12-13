@@ -3,8 +3,7 @@ package next.operator.linebot.talker;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
-import next.operator.ChineseTokens;
-import next.operator.linebot.service.RespondentReadable;
+import next.operator.linebot.service.RespondentTalkable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +17,8 @@ import java.util.function.Consumer;
  * 隨機回垃圾話: N or 不N
  */
 @Service
-public class NoiseTalker implements RespondentReadable {
+public class NoiseTalker implements RespondentTalkable {
   public static final String[] SUFFIXES = {"", "喔", "唄", "啦", "唷"};
-
-  @Autowired
-  private ChineseTokens chineseTokens;
 
   @Autowired
   private List<NoiscePattern> extraPatterns;

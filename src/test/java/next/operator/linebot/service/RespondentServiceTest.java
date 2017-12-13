@@ -36,10 +36,14 @@ public class RespondentServiceTest extends GenericTest {
 
     print("/oil");
 
-    print("W:1101");
+//    print("W:1101");
     print("有沒有聽到");
     print("懂不懂");
     print("行不行");
+
+    print("話說台幣多少啊");
+    print("這要60鎂啊啊啊啊啊");
+    print("日幣4000");
   }
 
   private void print(String commend) {

@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /**
  * 原生語言介面
  */
-public interface RespondentReadable {
+public interface RespondentTalkable {
 
   /** 看懂否 */
   boolean isReadable(String message);
