@@ -57,9 +57,9 @@ public class ExrateTalker implements RespondentTalkable {
   public String talk(String message) {
     final CurrencyType matchedCurrenctType = currentMached.get();
     currentMached.remove();
-    final CurrencyExrateModel exrate = currencyService.getExrate(CurrencyType.TWD.name(), matchedCurrenctType.name());
+    final CurrencyExrateModel exrate = currencyService.getExrate(matchedCurrenctType.name(), CurrencyType.TWD.name());
     return "我感覺到了你想知道" + matchedCurrenctType.getFirstLocalName() + "的匯率！\n" +
-        "1 " + CurrencyType.TWD.name() + " = " + exrateExecutor.fullDecimalFormat.format(exrate.getExrate()) + " " + exrate.getExTo() +
+        "1 " + exrate.getExFrom() + " = " + exrateExecutor.fullDecimalFormat.format(exrate.getExrate()) + " " + exrate.getExTo() +
         ", 資料時間：" + exrateExecutor.dateTimeFormatter.format(exrate.getTime());
   }
 
