@@ -44,6 +44,7 @@ public class RespondentServiceTest extends GenericTest {
     print("話說台幣多少啊");
     print("這要60鎂啊啊啊啊啊");
     print("日幣4000");
+    print("各位觀眾，一千兩百鎂！！");
   }
 
   private void print(String commend) {

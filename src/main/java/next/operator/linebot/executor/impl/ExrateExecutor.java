@@ -49,7 +49,7 @@ public class ExrateExecutor implements FunctionExecutable {
       final CurrencyExrateModel exrate = currencyService.getExrate(args[1], args[2]);
       return "匯率查詢：" +
           fullDecimalFormat.format(amount) + " " + exrate.getExFrom() + " = " + shortDecimalFormat.format(exrate.getExrate().multiply(BigDecimal.valueOf(amount))) + " " + exrate.getExTo() +
-          ", 匯換匯率：" + fullDecimalFormat.format(exrate.getExrate()) +
+          ", 兌換匯率：" + fullDecimalFormat.format(exrate.getExrate()) +
           ", 資料時間：" + dateTimeFormatter.format(exrate.getTime());
     } else {
       return userDao.getCurrentUserName() + "你打開的方式不對喔！要像這樣子:\n" + structure();

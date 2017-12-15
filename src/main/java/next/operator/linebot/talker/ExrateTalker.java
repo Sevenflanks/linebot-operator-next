@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -46,12 +45,13 @@ public class ExrateTalker implements RespondentTalkable {
         })
         .findFirst();
 
-    currentTerms.stream()
-        .filter(t -> "m".equals(t.getNatureStr()))
-        .map(t -> Optional.ofNullable(NumberUtils.tryDouble(t.getName())).orElseGet(() -> NumberUtils.zhNumConvertToInt(t.getName())))
-        .filter(Objects::nonNull)
-        .findFirst()
-        .ifPresent(currentAmount::set);
+    final double sum = currentTerms.stream()
+        .filter(t -> "m".equals(t.getNatureStr()) || "nw".equals(t.getNatureStr()))
+        .mapToDouble(t -> Optional.ofNullable(NumberUtils.tryDouble(t.getName())).orElseGet(() -> Optional.ofNullable(NumberUtils.zhNumConvertToInt(t.getName())).orElse(0D)))
+        .sum();
+    if (sum > 0) {
+      currentAmount.set(sum);
+    }
 
     matchedTerm.ifPresent(currentMached::set);
 
@@ -74,7 +74,7 @@ public class ExrateTalker implements RespondentTalkable {
 
     final CurrencyExrateModel exrate = currencyService.getExrate(matchedCurrenctType.name(), CurrencyType.TWD.name());
     return "我感覺到了你想知道" + matchedCurrenctType.getFirstLocalName() + "的匯率！\n" +
-        amount + " " + exrate.getExFrom() + " = " + exrateExecutor.fullDecimalFormat.format(exrate.getExrate().multiply(BigDecimal.valueOf(amount))) + " " + exrate.getExTo() +
+        amount + " " + exrate.getExFrom() + " = " + exrateExecutor.shortDecimalFormat.format(exrate.getExrate().multiply(BigDecimal.valueOf(amount))) + " " + exrate.getExTo() +
         ", 資料時間：" + exrateExecutor.dateTimeFormatter.format(exrate.getTime());
   }
 
