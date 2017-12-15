@@ -8,15 +8,17 @@ import next.operator.currency.model.CurrencyExrateModel;
 import next.operator.currency.service.CurrencyService;
 import next.operator.linebot.executor.impl.ExrateExecutor;
 import next.operator.linebot.service.RespondentTalkable;
+import next.operator.utils.NumberUtils;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.StreamSupport;
 
 /**
  * 當對話中出現錢幣關鍵字時提供匯率資料
@@ -30,22 +32,30 @@ public class ExrateTalker implements RespondentTalkable {
   @Autowired
   private CurrencyService currencyService;
 
-  private ThreadLocal<CurrencyType> currentMached = new ThreadLocal<>();
+  private ThreadLocal<Term> currentMached = new ThreadLocal<>();
+  private ThreadLocal<Double> currentAmount = new ThreadLocal<>();
 
   @Override
   public boolean isReadable(String message) {
-    final Iterator<Term> sourceIterator = NlpAnalysis.parse(message).iterator();
-    Iterable<Term> iterable = () -> sourceIterator;
-    final Optional<CurrencyType> matchedCurrenctType = StreamSupport.stream(iterable.spliterator(), false)
-        .map(Term::getName)
-        .map(CurrencyType::tryParseByName)
-        .filter(Optional::isPresent)
-        .filter(o -> CurrencyType.TWD != o.get()) // 台幣不算
-        .map(Optional::get)
+    final List<Term> currentTerms = NlpAnalysis.parse(message).getTerms();
+    // 檢查是否有存在符合幣別的單字
+    final Optional<Term> matchedTerm = currentTerms.stream()
+        .filter(t -> {
+          final Optional<CurrencyType> currencyType = CurrencyType.tryParseByName(t.getName());
+          return currencyType.filter(type -> CurrencyType.TWD != type).isPresent();
+        })
         .findFirst();
 
-    matchedCurrenctType.ifPresent(currentMached::set);
-    return matchedCurrenctType.isPresent();
+    currentTerms.stream()
+        .filter(t -> "m".equals(t.getNatureStr()))
+        .map(t -> Optional.ofNullable(NumberUtils.tryDouble(t.getName())).orElseGet(() -> NumberUtils.zhNumConvertToInt(t.getName())))
+        .filter(Objects::nonNull)
+        .findFirst()
+        .ifPresent(currentAmount::set);
+
+    matchedTerm.ifPresent(currentMached::set);
+
+    return matchedTerm.isPresent();
   }
 
   @Override
@@ -55,11 +65,16 @@ public class ExrateTalker implements RespondentTalkable {
 
   @Override
   public String talk(String message) {
-    final CurrencyType matchedCurrenctType = currentMached.get();
+    final Term term = currentMached.get();
+    final Double amount = Optional.ofNullable(currentAmount.get()).orElse(1D);
     currentMached.remove();
+    currentAmount.remove();
+
+    final CurrencyType matchedCurrenctType = CurrencyType.tryParseByName(term.getName()).get(); // isReadable已經檢查過，必定有值
+
     final CurrencyExrateModel exrate = currencyService.getExrate(matchedCurrenctType.name(), CurrencyType.TWD.name());
     return "我感覺到了你想知道" + matchedCurrenctType.getFirstLocalName() + "的匯率！\n" +
-        "1 " + exrate.getExFrom() + " = " + exrateExecutor.fullDecimalFormat.format(exrate.getExrate()) + " " + exrate.getExTo() +
+        amount + " " + exrate.getExFrom() + " = " + exrateExecutor.fullDecimalFormat.format(exrate.getExrate().multiply(BigDecimal.valueOf(amount))) + " " + exrate.getExTo() +
         ", 資料時間：" + exrateExecutor.dateTimeFormatter.format(exrate.getTime());
   }
 
