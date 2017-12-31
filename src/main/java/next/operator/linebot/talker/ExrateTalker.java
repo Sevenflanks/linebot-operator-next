@@ -10,7 +10,6 @@ import next.operator.linebot.executor.impl.ExrateExecutor;
 import next.operator.linebot.service.RespondentTalkable;
 import next.operator.utils.NumberUtils;
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,17 +34,17 @@ public class ExrateTalker implements RespondentTalkable {
   private ThreadLocal<Double> currentAmount = new ThreadLocal<>();
 
   @Override
-  public boolean isReadable(String message) {
-    final List<Term> currentTerms = NlpAnalysis.parse(message).getTerms();
+  public boolean isReadable(String message, List<Term> terms) {
     // 檢查是否有存在符合幣別的單字
-    final Optional<Term> matchedTerm = currentTerms.stream()
+    final Optional<Term> matchedTerm = terms.stream()
         .filter(t -> {
           final Optional<CurrencyType> currencyType = CurrencyType.tryParseByName(t.getName());
           return currencyType.filter(type -> CurrencyType.TWD != type).isPresent();
         })
         .findFirst();
 
-    final double sum = currentTerms.stream()
+    // 檢查是否存在數字
+    final double sum = terms.stream()
         .filter(t -> "m".equals(t.getNatureStr()) || "nw".equals(t.getNatureStr()))
         .mapToDouble(t -> Optional.ofNullable(NumberUtils.tryDouble(t.getName())).orElseGet(() -> Optional.ofNullable(NumberUtils.zhNumConvertToInt(t.getName())).orElse(0D)))
         .sum();

@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import next.operator.user.dao.UserDao;
 import next.operator.will.client.WillClient;
 import next.operator.will.exception.WillException;
+import org.ansj.domain.Term;
+import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -99,8 +101,10 @@ public class RespondentService {
 
   /** 處理所有原生語言命令 */
   private Optional<String> nativeLanguage(MessageEvent<TextMessageContent> event) {
+    // 進行文句分詞
+    final List<Term> terms = NlpAnalysis.parse(event.getMessage().getText()).getTerms();
     return readers.stream()
-            .filter(r -> ifThen(r.isReadable(event.getMessage().getText()), event, r.doFirst(client)))
+            .filter(r -> ifThen(r.isReadable(event.getMessage().getText(), terms), event, r.doFirst(client)))
             .findAny()
             .map(r -> r.talk(event.getMessage().getText()));
   }

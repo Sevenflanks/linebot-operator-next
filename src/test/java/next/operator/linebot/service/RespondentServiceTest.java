@@ -45,6 +45,12 @@ public class RespondentServiceTest extends GenericTest {
     print("這要60鎂啊啊啊啊啊");
     print("日幣4000");
     print("各位觀眾，一千兩百鎂！！");
+
+    print("2000美金");
+
+    print("中秋節快樂！");
+    print("新年快樂!");
+    print("你快樂嗎?");
   }
 
   private void print(String commend) {

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.regex.Pattern;
 
 @Component
-public class HaveOrNotNoiscePattern implements NoiscePattern {
+public class HaveOrNotNoiscePattern implements AbstractNoiscePattern {
 
   final static Pattern READ_PATTERN = Pattern.compile("有沒有");
   final String[] response = {"有", "沒有"};

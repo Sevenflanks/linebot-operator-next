@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.regex.Pattern;
 
 @Component
-public class DefaultNoiscePattern implements NoiscePattern {
+public class DefaultNoiscePattern implements AbstractNoiscePattern {
 
   @Autowired
   private ChineseTokens chineseTokens;
@@ -18,7 +18,7 @@ public class DefaultNoiscePattern implements NoiscePattern {
   @Override
   public NoisceMatcher match(String input) {
     return new NoisceMatcher(READ_PATTERN.matcher(input), matcher -> {
-      final String keyWord = chineseTokens.run(matcher.group(2))[0];
+      final String keyWord = chineseTokens.run(matcher.group(2))[0]; // TODO 改成用新的分詞器
       return response[(int) (Math.random() * response.length)] + keyWord + NoiseTalker.SUFFIXES[(int) (Math.random() * NoiseTalker.SUFFIXES.length)];
     });
   }

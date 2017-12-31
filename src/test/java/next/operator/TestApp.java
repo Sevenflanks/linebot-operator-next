@@ -21,10 +21,17 @@ import com.linecorp.bot.client.MessageContentResponse;
 import com.linecorp.bot.model.Multicast;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.profile.MembersIdsResponse;
 import com.linecorp.bot.model.profile.UserProfileResponse;
 import com.linecorp.bot.model.response.BotApiResponse;
+import com.linecorp.bot.model.richmenu.RichMenu;
+import com.linecorp.bot.model.richmenu.RichMenuIdResponse;
+import com.linecorp.bot.model.richmenu.RichMenuListResponse;
+import com.linecorp.bot.model.richmenu.RichMenuResponse;
 import com.linecorp.bot.spring.boot.LineBotAutoConfiguration;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -42,51 +49,118 @@ public class TestApp {
     SpringApplication.run(TestApp.class, args);
   }
 
+  // 為了避免test真的去call line api導致出錯，這邊要塞一個假的client進去
   @Bean
   @Primary
   public LineMessagingClient lineMessagingClient() {
     return new LineMessagingClient() {
+      private final Logger log = LoggerFactory.getLogger(this.getClass());
 
       @Override
       public CompletableFuture<BotApiResponse> replyMessage(ReplyMessage replyMessage) {
-        System.out.println("replyMessage:" + replyMessage);
-        return CompletableFuture.supplyAsync(() -> null);
+        log.info("replyMessage:" + replyMessage);
+        return null;
       }
 
       @Override
       public CompletableFuture<BotApiResponse> pushMessage(PushMessage pushMessage) {
-        System.out.println("pushMessage:" + pushMessage);
-        return CompletableFuture.supplyAsync(() -> null);
+        log.info("pushMessage:" + pushMessage);
+        return null;
       }
 
       @Override
       public CompletableFuture<BotApiResponse> multicast(Multicast multicast) {
-        System.out.println("multicast:" + multicast);
-        return CompletableFuture.supplyAsync(() -> null);
+        log.info("multicast:" + multicast);
+        return null;
       }
 
       @Override
       public CompletableFuture<MessageContentResponse> getMessageContent(String messageId) {
-        System.out.println("getMessageContent:" + messageId);
-        return CompletableFuture.supplyAsync(() -> null);
+        log.info("getMessageContent:" + messageId);
+        return null;
       }
 
       @Override
       public CompletableFuture<UserProfileResponse> getProfile(String userId) {
-        System.out.println("getProfile:" + userId);
-        return CompletableFuture.supplyAsync(() -> null);
+        log.info("getProfile:" + userId);
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<UserProfileResponse> getGroupMemberProfile(String groupId, String userId) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<UserProfileResponse> getRoomMemberProfile(String roomId, String userId) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<MembersIdsResponse> getGroupMembersIds(String groupId, String start) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<MembersIdsResponse> getRoomMembersIds(String roomId, String start) {
+        return null;
       }
 
       @Override
       public CompletableFuture<BotApiResponse> leaveGroup(String groupId) {
-        System.out.println("leaveGroup:" + groupId);
-        return CompletableFuture.supplyAsync(() -> null);
+        log.info("leaveGroup:" + groupId);
+        return null;
       }
 
       @Override
       public CompletableFuture<BotApiResponse> leaveRoom(String roomId) {
-        System.out.println("leaveRoom:" + roomId);
-        return CompletableFuture.supplyAsync(() -> null);
+        log.info("leaveRoom:" + roomId);
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<RichMenuResponse> getRichMenu(String richMenuId) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<RichMenuIdResponse> createRichMenu(RichMenu richMenu) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<BotApiResponse> deleteRichMenu(String richMenuId) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<RichMenuIdResponse> getRichMenuIdOfUser(String userId) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<BotApiResponse> linkRichMenuIdToUser(String userId, String richMenuId) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<BotApiResponse> unlinkRichMenuIdFromUser(String userId) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<MessageContentResponse> getRichMenuImage(String richMenuId) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<BotApiResponse> setRichMenuImage(String richMenuId, String contentType, byte[] content) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<RichMenuListResponse> getRichMenuList() {
+        return null;
       }
     };
   }
