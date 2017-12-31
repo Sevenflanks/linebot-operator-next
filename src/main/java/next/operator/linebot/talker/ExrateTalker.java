@@ -7,6 +7,7 @@ import next.operator.currency.enums.CurrencyType;
 import next.operator.currency.model.CurrencyExrateModel;
 import next.operator.currency.service.CurrencyService;
 import next.operator.linebot.executor.impl.ExrateExecutor;
+import next.operator.linebot.service.RespondentService;
 import next.operator.linebot.service.RespondentTalkable;
 import next.operator.utils.NumberUtils;
 import org.ansj.domain.Term;
@@ -34,8 +35,9 @@ public class ExrateTalker implements RespondentTalkable {
   private ThreadLocal<Double> currentAmount = new ThreadLocal<>();
 
   @Override
-  public boolean isReadable(String message, List<Term> terms) {
+  public boolean isReadable(String message) {
     // 檢查是否有存在符合幣別的單字
+    final List<Term> terms = RespondentService.currentTern.get();
     final Optional<Term> matchedTerm = terms.stream()
         .filter(t -> {
           final Optional<CurrencyType> currencyType = CurrencyType.tryParseByName(t.getName());

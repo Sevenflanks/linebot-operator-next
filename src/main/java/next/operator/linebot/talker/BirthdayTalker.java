@@ -5,10 +5,8 @@ import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.config.BasicInfo;
 import next.operator.linebot.service.RespondentTalkable;
-import org.ansj.domain.Term;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -17,7 +15,7 @@ import java.util.function.Consumer;
 public class BirthdayTalker implements RespondentTalkable {
 
   @Override
-  public boolean isReadable(String message, List<Term> terms) {
+  public boolean isReadable(String message) {
     // 必須是生日當天
     if (!BasicInfo.BIRTHDAY.equals(LocalDate.now())) {
       return false;

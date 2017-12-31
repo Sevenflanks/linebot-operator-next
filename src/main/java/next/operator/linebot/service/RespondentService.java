@@ -46,19 +46,33 @@ public class RespondentService {
   @Autowired
   private UserDao userDao;
 
+  public static ThreadLocal<List<Term>> currentTern = new ThreadLocal<>();
+  public static ThreadLocal<MessageEvent<TextMessageContent>> currentEvent = new ThreadLocal<>();
+
   public static boolean isCommand(String message) {
     return message.trim().startsWith("/") || message.trim().startsWith("！");
   }
 
   public TextMessage response(MessageEvent<TextMessageContent> event) {
     final String message = event.getMessage().getText();
+
+    // 一些常用的物件處理
+    currentTern.set(NlpAnalysis.parse(message).getTerms());
+    currentEvent.set(event);
+
+    final TextMessage response;
     if (isCommand(message)) {
-      return new TextMessage(commend(event, message));
+      response = new TextMessage(commend(event, message));
     } else if (WillClient.pattern.matcher(message).find()) {
-      return toWill(event);
+      response = toWill(event);
     } else {
-      return nativeLanguage(event).map(TextMessage::new).orElse(null);
+      response = nativeLanguage(event).map(TextMessage::new).orElse(null);
     }
+
+    currentTern.remove();
+    currentEvent.remove();
+
+    return response;
   }
 
   /** 給薇兒的指令 */
@@ -102,9 +116,8 @@ public class RespondentService {
   /** 處理所有原生語言命令 */
   private Optional<String> nativeLanguage(MessageEvent<TextMessageContent> event) {
     // 進行文句分詞
-    final List<Term> terms = NlpAnalysis.parse(event.getMessage().getText()).getTerms();
     return readers.stream()
-            .filter(r -> ifThen(r.isReadable(event.getMessage().getText(), terms), event, r.doFirst(client)))
+            .filter(r -> ifThen(r.isReadable(event.getMessage().getText()), event, r.doFirst(client)))
             .findAny()
             .map(r -> r.talk(event.getMessage().getText()));
   }

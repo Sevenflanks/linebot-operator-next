@@ -2,7 +2,7 @@ package next.operator.linebot.service;
 
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.event.source.UnknownSource;
+import com.linecorp.bot.model.event.source.UserSource;
 import com.linecorp.bot.model.message.TextMessage;
 import lombok.extern.slf4j.Slf4j;
 import next.operator.GenericTest;
@@ -50,12 +50,14 @@ public class RespondentServiceTest extends GenericTest {
 
     print("中秋節快樂！");
     print("新年快樂!");
+    print("新年快樂喔!");
+    print("新年快樂");
     print("你快樂嗎?");
   }
 
   private void print(String commend) {
     final MessageEvent<TextMessageContent> event =
-        new MessageEvent<>("test-reply-token", new UnknownSource(), new TextMessageContent("test-msg", commend), Instant.now());
+        new MessageEvent<>("test-reply-token", new UserSource("test-user"), new TextMessageContent("test-msg", commend), Instant.now());
     Optional.ofNullable(respondentService.response(event)).map(TextMessage::getText).ifPresent(System.out::println);
   }
 

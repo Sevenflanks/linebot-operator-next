@@ -10,13 +10,11 @@ import next.operator.diagnostic.client.DiagnosticClient;
 import next.operator.diagnostic.exception.DiagnosticException;
 import next.operator.diagnostic.model.DiagnosticModel;
 import next.operator.linebot.service.RespondentTalkable;
-import org.ansj.domain.Term;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,7 +34,7 @@ public class UrlTalker implements RespondentTalkable {
   final Pattern readPattern = Pattern.compile("(http[s]?|ftp)://[^\\s]*+");
 
   @Override
-  public boolean isReadable(String message, List<Term> terms) {
+  public boolean isReadable(String message) {
     return readPattern.matcher(message).find();
   }
 

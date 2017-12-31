@@ -11,6 +11,15 @@ public class Record extends GenericEntity {
   private String talkedTo; // senderId
   private LocalDateTime talkedTime;
 
+  public Record() {
+  }
+
+  public Record(String key, String talkedTo, LocalDateTime talkedTime) {
+    this.key = key;
+    this.talkedTo = talkedTo;
+    this.talkedTime = talkedTime;
+  }
+
   public String getKey() {
     return key;
   }

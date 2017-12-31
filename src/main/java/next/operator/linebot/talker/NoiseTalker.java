@@ -4,7 +4,6 @@ import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.linebot.service.RespondentTalkable;
-import org.ansj.domain.Term;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,7 @@ public class NoiseTalker implements RespondentTalkable {
   private ThreadLocal<NoisceMatcher> currentMached = new ThreadLocal<>();
 
   @Override
-  public boolean isReadable(String message, List<Term> terms) {
+  public boolean isReadable(String message) {
     final Optional<NoisceMatcher> matched = extraPatterns.stream()
         .map(np -> np.match(message))
         .filter(NoisceMatcher::isMatched)
