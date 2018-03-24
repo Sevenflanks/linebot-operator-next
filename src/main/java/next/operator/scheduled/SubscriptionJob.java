@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import next.operator.subscription.dao.SubscriptionDao;
 import next.operator.subscription.entity.Subscription;
 import next.operator.subscription.service.SubscriptionService;
+import org.ocpsoft.prettytime.PrettyTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -15,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Date;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -56,6 +55,14 @@ public class SubscriptionJob {
 
   @Transactional
   public void subscribe(Subscription subscription) {
+    log.info("subscribing {}'s job, start:{}, fix:{}, msg:{}, to:{}",
+        subscription.getSubscriber().getSubscriberName(),
+        subscription.getStartTime(),
+        subscription.getFixedRate(),
+        subscription.getMsg(),
+        subscription.getSubscriber().getSubscribeTo());
+
+    // 下次應執行時間
     final Instant next = toNext(subscription.getStartTime(), subscription.getFixedRate());
 
     //　開始進行排程註冊
@@ -66,24 +73,22 @@ public class SubscriptionJob {
     );
     subscriptionDao.save(subscription);
 
-    // 判斷上一次的排程有沒有執行過(六十秒緩衝判斷)
+    // 上次應執行時間
     final Instant prev = next.minus(subscription.getFixedRate());
+    // 若不存在上次執行時間，代表是第一次進行訂閱
     if (subscription.getLastPushTime() == null) {
+      log.info("ID:{}) First time subscribe, show detail", subscription.getId());
       subscriptionService.push(subscription.getId(), "這是你剛剛訂閱的訊息:" + subscription + "\n");
-    } else if (subscription.getStartTime().isBefore(Instant.now()) && subscription.getLastPushTime().plusSeconds(60).isBefore(prev)) {
+    }
+    // 當上次應執行時間 > 上次執行時間，代表上一次應執行時間時並沒有執行，此時要補執行
+    else if (prev.isAfter(subscription.getLastPushTime())) {
+      log.info("ID:{}) is delay, send subscription immediately", subscription.getId());
       subscriptionService.push(subscription.getId(),
-          "拍謝，剛剛睡著了啦，這是原本應該要在" +
-              DateTimeFormatter.ISO_ZONED_DATE_TIME.format(prev.atOffset(ZoneOffset.ofHours(8))) +
+          "歹勢，剛剛睡著了啦，這是原本應該要在" +
+              new PrettyTime().format(Date.from(prev)).replaceAll(" ", "") +
               "發的訊息\n"
       );
     }
-
-    log.info("subscribed {}'s job, start:{}, fix:{}, msg:{}, to:{}",
-        subscription.getSubscriber().getSubscriberName(),
-        subscription.getStartTime(),
-        subscription.getFixedRate(),
-        subscription.getMsg(),
-        subscription.getSubscriber().getSubscribeTo());
   }
 
   public static Instant toNext(Instant time, Duration d) {
