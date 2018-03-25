@@ -6,7 +6,6 @@ import next.operator.diagnostic.model.DiagnosticModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /** 診斷網址狀況 */
-@Component
+//@Component
 public class DiagnosticClient {
 
   private static final String DIAGNOSTIC_URL = "https://www.google.com/safebrowsing/diagnostic";

@@ -53,18 +53,18 @@ public class LineHandler {
     return null;
   }
 
-  @EventMapping
-  public void handleDefaultMessageEvent(Event event) {
-    log.info("DefaultMessageEvent: {}", event);
-  }
+//  @EventMapping
+//  public void handleDefaultMessageEvent(Event event) {
+//    log.info("DefaultMessageEvent: {}", event);
+//  }
 
-  /**
-   * 封鎖/刪除好友
-   */
-  @EventMapping
-  public void handleUnfollowEvent(UnfollowEvent event) {
-    log.info("Unfollowed this bot: {}", event);
-  }
+//  /**
+//   * 封鎖/刪除好友
+//   */
+//  @EventMapping
+//  public void handleUnfollowEvent(UnfollowEvent event) {
+//    log.info("Unfollowed this bot: {}", event);
+//  }
 
   /**
    * 加入好友
@@ -92,20 +92,20 @@ public class LineHandler {
     client.replyMessage(new ReplyMessage(event.getReplyToken(), new TextMessage("安安你好掰掰去洗澡~")));
   }
 
-  @EventMapping
-  public void handlePostbackEvent(PostbackEvent event) {
-    log.info("Postbacked: {}", event);
-  }
+//  @EventMapping
+//  public void handlePostbackEvent(PostbackEvent event) {
+//    log.info("Postbacked: {}", event);
+//  }
 
-  @EventMapping
-  public void handleBeaconEvent(BeaconEvent event) {
-    log.info("Beacon: {}", event);
-  }
+//  @EventMapping
+//  public void handleBeaconEvent(BeaconEvent event) {
+//    log.info("Beacon: {}", event);
+//  }
 
-  @EventMapping
-  public void handleOtherEvent(Event event) {
-    log.debug("Received message(Ignored): {}", event);
-  }
+//  @EventMapping
+//  public void handleOtherEvent(Event event) {
+//    log.debug("Received message(Ignored): {}", event);
+//  }
 
   public void sendToAll(String message) {
     client.multicast(new Multicast(userDao.findAll(), new TextMessage(message)));
