@@ -85,7 +85,7 @@ public class SubscriptionJob {
     else if (prev.isAfter(subscription.getLastPushTime())) {
       log.info("ID:{}) is delay, send subscription immediately", subscription.getId());
       subscriptionService.push(subscription.getId(),
-          "歹勢，剛剛睡著了啦，這是原本應該要在" +
+          "歹勢，剛剛睡著了啦，這是原本要在" +
               new PrettyTime(Locale.TRADITIONAL_CHINESE).format(Date.from(prev)).replaceAll(" ", "") +
               "發的訊息\n"
       );
