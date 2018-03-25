@@ -17,6 +17,7 @@ import java.sql.Date;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 訂閱訊息動態註冊
@@ -85,7 +86,7 @@ public class SubscriptionJob {
       log.info("ID:{}) is delay, send subscription immediately", subscription.getId());
       subscriptionService.push(subscription.getId(),
           "歹勢，剛剛睡著了啦，這是原本應該要在" +
-              new PrettyTime().format(Date.from(prev)).replaceAll(" ", "") +
+              new PrettyTime(Locale.TRADITIONAL_CHINESE).format(Date.from(prev)).replaceAll(" ", "") +
               "發的訊息\n"
       );
     }

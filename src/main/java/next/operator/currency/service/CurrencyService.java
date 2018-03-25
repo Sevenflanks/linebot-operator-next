@@ -1,11 +1,13 @@
 package next.operator.currency.service;
 
+import lombok.extern.slf4j.Slf4j;
 import next.operator.currency.model.CurrencyExrateModel;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
 import java.util.List;
 
+@Slf4j
 @Service
 public class CurrencyService {
 
@@ -36,9 +38,20 @@ public class CurrencyService {
   }
 
   private CurrencyExrateModel getExrate(String currency) {
+    waitDataLoaded();
     return exrateDatas.stream()
         .filter(d -> d.getExTo().equals(currency))
         .findAny()
         .orElseThrow(() -> new ValidationException("殘念，我好像不認識【" + currency + "】，你要不要試試別家？"));
+  }
+
+  private void waitDataLoaded() {
+    while (exrateDatas == null) {
+      try {
+        Thread.sleep(10_000);
+      } catch (InterruptedException e) {
+        log.error("wait exrateDatas load failed", e);
+      }
+    }
   }
 }

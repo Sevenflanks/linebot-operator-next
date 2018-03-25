@@ -1,7 +1,6 @@
 package next.operator.scheduled;
 
 import lombok.extern.slf4j.Slf4j;
-import next.operator.currency.model.CurrencyExrateModel;
 import next.operator.currency.service.CurrencyExtRateDataLoader;
 import next.operator.currency.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 /**
  * 定期查全球匯率
@@ -29,8 +27,7 @@ public class CurrencyJob {
   public void load() {
     log.debug("loading CurrencyExtRateData");
     try {
-      final List<CurrencyExrateModel> datas = currencyExtRateDataLoader.load();
-      CurrencyService.exrateDatas = datas;
+      CurrencyService.exrateDatas = currencyExtRateDataLoader.load();
       log.info("loading CurrencyExtRateData success");
     } catch (Exception e) {
       log.error("loading CurrencyExtRateData failed", e);

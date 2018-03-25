@@ -29,11 +29,11 @@
     </repositories>
 
     <dependencies>
-        <!-- linebot -->
+        <!-- https://github.com/line/line-bot-sdk-java -->
         <dependency>
             <groupId>com.linecorp.bot</groupId>
             <artifactId>line-bot-spring-boot</artifactId>
-            <version>1.13.0</version>
+            <version>1.15.0</version>
         </dependency>
 
         <!-- spring -->
