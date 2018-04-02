@@ -35,7 +35,7 @@ public class RespondentService {
   private List<RespondentExecutable> executors;
 
   @Autowired
-  private List<RespondentTalkable> readers;
+  private List<RespondentTalkable> talkers;
 
   @Autowired
   private LineMessagingClient client;
@@ -116,7 +116,7 @@ public class RespondentService {
   /** 處理所有原生語言命令 */
   private Optional<String> nativeLanguage(MessageEvent<TextMessageContent> event) {
     // 進行文句分詞
-    return readers.stream()
+    return talkers.stream()
             .filter(r -> ifThen(r.isReadable(event.getMessage().getText()), event, r.doFirst(client)))
             .findAny()
             .map(r -> r.talk(event.getMessage().getText()));

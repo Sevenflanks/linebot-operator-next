@@ -82,7 +82,8 @@ public class SubscriptionJob {
       subscriptionService.push(subscription.getId(), "這是你剛剛訂閱的訊息:" + subscription + "\n");
     }
     // 當上次應執行時間 > 上次執行時間，代表上一次應執行時間時並沒有執行，此時要補執行
-    else if (prev.isAfter(subscription.getLastPushTime())) {
+    // 但如果上次應執行時間在未來，則不處理
+    else if (!prev.isAfter(Instant.now()) && prev.isAfter(subscription.getLastPushTime())) {
       log.info("ID:{}) is delay, send subscription immediately", subscription.getId());
       subscriptionService.push(subscription.getId(),
           "歹勢，剛剛睡著了啦，這是原本要在" +
