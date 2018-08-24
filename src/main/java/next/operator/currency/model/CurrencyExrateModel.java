@@ -37,7 +37,7 @@ public class CurrencyExrateModel {
   public CurrencyExrateModel merge(CurrencyExrateModel next) {
     final CurrencyExrateModel merged = new CurrencyExrateModel();
     if (!this.exTo.equals(next.exFrom)) {
-      throw new ValidationException("這兩個匯率檔無法合併哦，幫我叫主人回家檢查程式。[left:" + this + ", right:" + next + "]");
+      throw new ValidationException("這兩個匯率檔無法合併哦，幫我叫工程師回家檢查程式。[left:" + this + ", right:" + next + "]");
     } else {
       merged.exFrom = this.exFrom;
       merged.exTo = next.exTo;
