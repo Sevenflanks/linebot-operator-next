@@ -54,7 +54,7 @@ public class ExrateTalker implements RespondentTalkable {
           .mapToDouble(t -> Optional.ofNullable(NumberUtils.tryDouble(t.getName())).orElseGet(() -> Optional.ofNullable(NumberUtils.zhNumConvertToInt(t.getName())).orElse(1D)))
           .sum();
 
-      currentAmount.set(sum);
+      currentAmount.set(sum > 0 ? sum : 1);
       currentMached.set(matchedTerm.get());
     } else {
       currentMached.remove();
