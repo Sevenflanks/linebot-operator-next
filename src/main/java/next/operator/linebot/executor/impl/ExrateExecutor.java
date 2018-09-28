@@ -33,7 +33,7 @@ public class ExrateExecutor implements FunctionExecutable {
     };
   }
 
-  public final DecimalFormat decimalFormat = new DecimalFormat("#,###,###,##0.0000");
+  public final DecimalFormat decimalFormat = new DecimalFormat("#,###,###,##0.0###");
   public final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
   @Override
   public String execute(MessageEvent<TextMessageContent> event, String... args) {

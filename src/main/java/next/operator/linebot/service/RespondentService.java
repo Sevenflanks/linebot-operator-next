@@ -10,7 +10,7 @@ import next.operator.user.dao.UserDao;
 import next.operator.will.client.WillClient;
 import next.operator.will.exception.WillException;
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.analysis.DicAnalysis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -55,22 +55,24 @@ public class RespondentService {
 
   public TextMessage response(MessageEvent<TextMessageContent> event) {
     final String message = event.getMessage().getText();
+    TextMessage response = null;
 
     // 一些常用的物件處理
-    currentTern.set(NlpAnalysis.parse(message).getTerms());
-    currentEvent.set(event);
+    try {
+      currentTern.set(DicAnalysis.parse(message).getTerms());
+      currentEvent.set(event);
 
-    final TextMessage response;
-    if (isCommand(message)) {
-      response = new TextMessage(commend(event, message));
-    } else if (WillClient.pattern.matcher(message).find()) {
-      response = toWill(event);
-    } else {
-      response = nativeLanguage(event).map(TextMessage::new).orElse(null);
+      if (isCommand(message)) {
+        response = new TextMessage(commend(event, message));
+      } else if (WillClient.pattern.matcher(message).find()) {
+        response = toWill(event);
+      } else {
+        response = nativeLanguage(event).map(TextMessage::new).orElse(null);
+      }
+    } finally {
+      currentTern.remove();
+      currentEvent.remove();
     }
-
-    currentTern.remove();
-    currentEvent.remove();
 
     return response;
   }

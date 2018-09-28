@@ -15,45 +15,48 @@ import java.util.Optional;
 @Slf4j
 public class RespondentServiceTest extends GenericTest {
 
-  @Autowired
-  private RespondentService respondentService;
-
   @Test
   public void commend() throws Exception {
-    print("/help");
-    print("/exrate twd jpy");
-    print("/exrate 100 twd jpy");
-    print("/exrate 10.5 usd jpy");
-    print("！匯率 10.5 usd jpy");
-
-    print("/roll 1d6");
-    print("/roll 6d6");
-    print("/roll 6d6 2d10");
-    print("！骰 6d6 2d10");
-    print("/roll 6d6+1");
-    print("/roll 6d6*5");
-    print("/roll 10d3*2-2");
-
-    print("/oil");
+//    print("/help");
+//    print("/exrate twd jpy");
+//    print("/exrate 100 twd jpy");
+//    print("/exrate 10.5 usd jpy");
+//    print("！匯率 10.5 usd jpy");
+//
+//    print("/roll 1d6");
+//    print("/roll 6d6");
+//    print("/roll 6d6 2d10");
+//    print("！骰 6d6 2d10");
+//    print("/roll 6d6+1");
+//    print("/roll 6d6*5");
+//    print("/roll 10d3*2-2");
+//
+//    print("/oil");
 
 //    print("W:1101");
-    print("有沒有聽到");
-    print("懂不懂");
-    print("行不行");
+//    print("有沒有聽到");
+//    print("懂不懂");
+//    print("行不行");
+//
+//    print("話說台幣多少啊");
+//    print("這要60鎂啊啊啊啊啊");
+//    print("日幣4000");
+//    print("各位觀眾，一千兩百鎂！！");
+//
+//    print("2000美金");
+//
+//    print("中秋節快樂！");
+//    print("新年快樂!");
+//    print("新年快樂喔!");
+//    print("新年快樂");
+//    print("你快樂嗎?");
 
-    print("話說台幣多少啊");
-    print("這要60鎂啊啊啊啊啊");
-    print("日幣4000");
-    print("各位觀眾，一千兩百鎂！！");
-
-    print("2000美金");
-
-    print("中秋節快樂！");
-    print("新年快樂!");
-    print("新年快樂喔!");
-    print("新年快樂");
-    print("你快樂嗎?");
+    print("我來看看我可以花4500日幣買到多少日幣的書");
+    print("4500日幣可以?");
   }
+
+  @Autowired
+  private RespondentService respondentService;
 
   private void print(String commend) {
     final MessageEvent<TextMessageContent> event =
