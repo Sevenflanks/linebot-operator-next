@@ -45,18 +45,23 @@ public class ExrateTalker implements RespondentTalkable {
         })
         .findFirst();
 
-    // 檢查是否存在數字
-    final double sum = terms.stream()
-        .filter(t -> "m".equals(t.getNatureStr()) || "nw".equals(t.getNatureStr()))
-        .mapToDouble(t -> Optional.ofNullable(NumberUtils.tryDouble(t.getName())).orElseGet(() -> Optional.ofNullable(NumberUtils.zhNumConvertToInt(t.getName())).orElse(0D)))
-        .sum();
-    if (sum > 0) {
+    final boolean matched = matchedTerm.isPresent();
+
+    if (matched) {
+      // 檢查是否存在數字
+      final double sum = terms.stream()
+          .filter(t -> "m".equals(t.getNatureStr()) || "nw".equals(t.getNatureStr()))
+          .mapToDouble(t -> Optional.ofNullable(NumberUtils.tryDouble(t.getName())).orElseGet(() -> Optional.ofNullable(NumberUtils.zhNumConvertToInt(t.getName())).orElse(1D)))
+          .sum();
+
       currentAmount.set(sum);
+      currentMached.set(matchedTerm.get());
+    } else {
+      currentMached.remove();
+      currentAmount.remove();
     }
 
-    matchedTerm.ifPresent(currentMached::set);
-
-    return matchedTerm.isPresent();
+    return matched;
   }
 
   @Override
