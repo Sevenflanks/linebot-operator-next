@@ -31,8 +31,8 @@ public class ExrateTalker implements RespondentTalkable {
   @Autowired
   private CurrencyService currencyService;
 
-  private ThreadLocal<Term> currentMached = new ThreadLocal<>();
-  private ThreadLocal<Double> currentAmount = new ThreadLocal<>();
+  private ThreadLocal<Term> matched = new ThreadLocal<>();
+  private ThreadLocal<Double> amount = new ThreadLocal<>();
 
   @Override
   public boolean isReadable(String message) {
@@ -45,23 +45,23 @@ public class ExrateTalker implements RespondentTalkable {
         })
         .findFirst();
 
-    final boolean matched = matchedTerm.isPresent();
+    final boolean isMatch = matchedTerm.isPresent();
 
-    if (matched) {
+    if (isMatch) {
       // 檢查是否存在數字
       final double sum = terms.stream()
           .filter(t -> "m".equals(t.getNatureStr()) || "nw".equals(t.getNatureStr()))
           .mapToDouble(t -> Optional.ofNullable(NumberUtils.tryDouble(t.getName())).orElseGet(() -> Optional.ofNullable(NumberUtils.zhNumConvertToInt(t.getName())).orElse(1D)))
           .sum();
 
-      currentAmount.set(sum > 0 ? sum : 1);
-      currentMached.set(matchedTerm.get());
+      amount.set(sum);
+      matched.set(matchedTerm.get());
     } else {
-      currentMached.remove();
-      currentAmount.remove();
+      matched.remove();
+      amount.remove();
     }
 
-    return matched;
+    return isMatch;
   }
 
   @Override
@@ -71,10 +71,10 @@ public class ExrateTalker implements RespondentTalkable {
 
   @Override
   public String talk(String message) {
-    final Term term = currentMached.get();
-    final Double amount = Optional.ofNullable(currentAmount.get()).orElse(1D);
-    currentMached.remove();
-    currentAmount.remove();
+    final Term term = matched.get();
+    final Double amount = Optional.ofNullable(this.amount.get()).filter(n -> n != 0).orElse(1D);
+    matched.remove();
+    this.amount.remove();
 
     final CurrencyType matchedCurrenctType = CurrencyType.tryParseByName(term.getName()).get(); // isReadable已經檢查過，必定有值
 
