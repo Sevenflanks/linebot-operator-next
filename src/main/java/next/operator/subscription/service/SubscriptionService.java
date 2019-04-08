@@ -30,20 +30,15 @@ import java.util.stream.Stream;
 @Service
 public class SubscriptionService {
 
-  @Autowired
-  private SubscriptionDao subscriptionDao;
+  @Autowired private SubscriptionDao subscriptionDao;
 
-  @Autowired
-  private UserDao userDao;
+  @Autowired private UserDao userDao;
 
-  @Autowired
-  private Validator validator;
+  @Autowired private Validator validator;
 
-  @Autowired
-  private LineMessagingClient client;
+  @Autowired private LineMessagingClient client;
 
-  @Autowired
-  private RespondentService respondentService;
+  @Autowired private RespondentService respondentService;
 
   @Transactional
   public void deSubscribe(Source source) {
@@ -53,11 +48,12 @@ public class SubscriptionService {
 
   @Transactional
   public void deSubscribe(Source source, Long id) {
-    final Subscription subscription = Optional.ofNullable(subscriptionDao.findOne(id))
-        .orElseThrow(() -> new ValidationException("ID:" + id + ")這一則訂閱不存在喔！"));
+    final Subscription subscription =
+        Optional.ofNullable(subscriptionDao.findOne(id))
+            .orElseThrow(() -> new ValidationException("ID:" + id + ")這一則訂閱不存在喔！"));
     subscriptionDao.delete(subscription);
     if (!subscription.getSubscriber().getSubscriberId().equals(source.getUserId())) {
-      throw  new ValidationException("這不是你訂閱的東西喔！");
+      throw new ValidationException("這不是你訂閱的東西喔！");
     }
   }
 
@@ -82,18 +78,23 @@ public class SubscriptionService {
   public Subscription subscribe(Subscription subscription) {
 
     // 檢查是否有此人註冊過的消息
-    final List<Subscription> dbSubscriptions = subscriptionDao.findBySubscriber_SubscriberId(subscription.getSubscriber().getSubscriberId());
+    final List<Subscription> dbSubscriptions =
+        subscriptionDao.findBySubscriber_SubscriberId(
+            subscription.getSubscriber().getSubscriberId());
     if (dbSubscriptions.size() >= 3) {
-      throw new ValidationException(subscription.getSubscriber().getSubscriberName() + "不能再訂閱囉，目前每個人只能訂閱三個消息！");
+      throw new ValidationException(
+          subscription.getSubscriber().getSubscriberName() + "不能再訂閱囉，目前每個人只能訂閱三個消息！");
     }
 
     // 欄位檢核
-    final Stream<String> subscriptionMsgs = validator.validate(subscription).stream()
-        .map(ValidationUtils::from);
-    final Stream<String> subscriberMsgs = Optional.ofNullable(subscription.getSubscriber())
-        .map(s -> validator.validate(s))
-        .orElse(Sets.newHashSet()).stream()
-        .map(ValidationUtils::from);
+    final Stream<String> subscriptionMsgs =
+        validator.validate(subscription).stream().map(ValidationUtils::from);
+    final Stream<String> subscriberMsgs =
+        Optional.ofNullable(subscription.getSubscriber())
+            .map(s -> validator.validate(s))
+            .orElse(Sets.newHashSet())
+            .stream()
+            .map(ValidationUtils::from);
     ValidationUtils.requiredMsgsEmpty(subscriptionMsgs, subscriberMsgs);
 
     log.info("subscribed Subscription:{}" + subscription);
@@ -114,30 +115,40 @@ public class SubscriptionService {
     // 如果是指令型，則自動觸發指令
     if (RespondentService.isCommand(subscription.getMsg())) {
       // 產生一個假的event
-      final MessageEvent<TextMessageContent> event = new MessageEvent<>(null,
-          new Source() {
-            @Override
-            public String getUserId() {
-              return subscription.getSubscriber().getSubscriberId();
-            }
-            @Override
-            public String getSenderId() {
-              return subscription.getSubscriber().getSubscribeTo();
-            }
-          },
-          new TextMessageContent(null, subscription.getMsg()),
-          Instant.now()
-      );
+      final MessageEvent<TextMessageContent> event =
+          new MessageEvent<>(
+              null,
+              new Source() {
+                @Override
+                public String getUserId() {
+                  return subscription.getSubscriber().getSubscriberId();
+                }
 
-      response = Optional.ofNullable(respondentService.response(event)).map(TextMessage::getText).orElse(subscription.getMsg());
+                @Override
+                public String getSenderId() {
+                  return subscription.getSubscriber().getSubscribeTo();
+                }
+              },
+              new TextMessageContent(null, subscription.getMsg()),
+              Instant.now());
+
+      response =
+          Optional.ofNullable(respondentService.response(event))
+              .map(TextMessage::getText)
+              .orElse(subscription.getMsg());
     } else {
       response = subscription.getMsg();
     }
 
-    final String message = Optional.ofNullable(prefix).orElse("") + "以下是" + subscription.getSubscriber().getSubscriberName() + "訂閱的消息\n" + response;
-    client.pushMessage(new PushMessage(subscription.getSubscriber().getSubscribeTo(), new TextMessage(message)));
+    final String message =
+        Optional.ofNullable(prefix).orElse("")
+            + "以下是"
+            + subscription.getSubscriber().getSubscriberName()
+            + "訂閱的消息\n"
+            + response;
+    client.pushMessage(
+        new PushMessage(subscription.getSubscriber().getSubscribeTo(), new TextMessage(message)));
     subscription.setLastPushTime(Instant.now());
     subscriptionDao.save(subscription);
   }
-
 }

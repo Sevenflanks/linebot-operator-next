@@ -51,8 +51,10 @@ public class RespondentServiceTest extends GenericTest {
 //    print("新年快樂");
 //    print("你快樂嗎?");
 
-    print("我來看看我可以花4500日幣買到多少日幣的書");
-    print("4500日幣可以?");
+//    print("我來看看我可以花4500日幣買到多少日幣的書");
+//    print("4500日幣可以?");
+
+    print("曬卡啦");
   }
 
   @Autowired
