@@ -1,20 +1,25 @@
 package next.operator.linebot.handler;
 
+import com.google.common.base.Strings;
 import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.model.Multicast;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
-import com.linecorp.bot.model.event.*;
+import com.linecorp.bot.model.event.Event;
+import com.linecorp.bot.model.event.FollowEvent;
+import com.linecorp.bot.model.event.JoinEvent;
+import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import lombok.extern.slf4j.Slf4j;
+import next.operator.common.uncheck.Uncheck;
 import next.operator.linebot.service.RespondentService;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ValidationException;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -74,7 +79,6 @@ public class LineHandler {
     log.info("Followed this bot: {}", event);
     String message;
     try {
-      userDao.insert(event.getSource().getUserId());
       message = client.getProfile(event.getSource().getUserId()).get().getDisplayName();
     } catch (InterruptedException | ExecutionException e) {
       message = "";
@@ -107,13 +111,10 @@ public class LineHandler {
 //    log.debug("Received message(Ignored): {}", event);
 //  }
 
-  public void sendToAll(String message) {
-    client.multicast(new Multicast(userDao.findAll(), new TextMessage(message)));
-  }
-
   private void setCurrentUserName(Event event) {
     try {
-      userDao.currentUserName.set(client.getProfile(event.getSource().getUserId()).get().getDisplayName());
+      userDao.currentUserName.set(Optional.ofNullable(Strings.emptyToNull(client.getProfile(event.getSource().getUserId()).get().getDisplayName()))
+          .orElseGet(Uncheck.get(() -> client.getGroupMemberProfile(event.getSource().getSenderId(), event.getSource().getUserId()).get().getDisplayName())));
     } catch (InterruptedException | ExecutionException ignored) {
     }
   }

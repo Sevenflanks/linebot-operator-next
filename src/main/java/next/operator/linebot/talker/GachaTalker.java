@@ -37,7 +37,7 @@ public class GachaTalker implements RespondentTalkable {
     final List<GachaService.Unit> results = gachaService.tenPumping();
 
     final StringBuilder sb = new StringBuilder();
-    sb.append(userDao.getCurrentUserName()).append("\n");
+    sb.append("@").append(userDao.getCurrentUserName()).append("\n");
 
     int goldCnt = 0;
     for (int i = 0; i < results.size(); i++) {

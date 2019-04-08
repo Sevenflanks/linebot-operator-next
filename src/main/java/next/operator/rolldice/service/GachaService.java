@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.SplittableRandom;
 
 /**
  * 轉蛋功能
@@ -35,10 +36,10 @@ public class GachaService {
       new Unit(彩,  1_999),
       new Unit(金, 98_000));
 
-//  private SecureRandom secureRandom;
+  private final SplittableRandom random;
 
   public GachaService() throws NoSuchAlgorithmException {
-//    this.secureRandom = SecureRandom.getInstanceStrong();
+    this.random = new SplittableRandom();
   }
 
   public Unit singlePumping() {
@@ -46,8 +47,8 @@ public class GachaService {
   }
   public Unit singlePumping(List<Unit> units) {
     // 本次抽出
-    final int e = (int) (Math.random() * 100_000);
-//    log.debug("pumping {}", e);
+    final int e = random.nextInt(100_000);
+    log.debug("pumping {}", e);
 
     int lastSpacing = 0;
     for (Unit unit : units) {
