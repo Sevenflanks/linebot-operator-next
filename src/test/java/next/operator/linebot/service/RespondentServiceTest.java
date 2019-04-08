@@ -55,6 +55,10 @@ public class RespondentServiceTest extends GenericTest {
 //    print("4500日幣可以?");
 
     print("曬卡啦");
+    print("曬卡啦");
+    print("曬卡啦");
+    print("曬卡啦");
+    print("曬卡啦");
   }
 
   @Autowired

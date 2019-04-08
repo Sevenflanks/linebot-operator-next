@@ -48,7 +48,6 @@ public class GachaService {
   public Unit singlePumping(List<Unit> units) {
     // 本次抽出
     final int e = random.nextInt(100_000);
-    log.debug("pumping {}", e);
 
     int lastSpacing = 0;
     for (Unit unit : units) {
