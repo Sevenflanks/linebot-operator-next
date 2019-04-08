@@ -45,7 +45,7 @@ public class GachaTalker implements RespondentTalkable {
       sb.append(unit.getName());
 
       // 每五個換一行
-      if (i % 5 == 4) {
+      if (i % 5 == 4 && i < results.size()) {
         sb.append("\n");
       }
     }
