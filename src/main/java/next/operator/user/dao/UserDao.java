@@ -24,18 +24,17 @@ public class UserDao {
     if (currentUserName.get() != null) {
       return currentUserName.get();
     } else {
-      final Source source = currentSource.get();
-      final CompletableFuture<UserProfileResponse> userProfileResponse;
-      if (source instanceof RoomSource) {
-        userProfileResponse = client.getRoomMemberProfile(((RoomSource) source).getRoomId(), source.getUserId());
-      } else if (source instanceof GroupSource) {
-        userProfileResponse = client.getGroupMemberProfile(((GroupSource) source).getGroupId(), source.getUserId());
-      } else {
-        userProfileResponse = client.getProfile(source.getUserId());
-      }
-
       String displayName;
       try {
+        final Source source = currentSource.get();
+        final CompletableFuture<UserProfileResponse> userProfileResponse;
+        if (source instanceof RoomSource) {
+          userProfileResponse = client.getRoomMemberProfile(((RoomSource) source).getRoomId(), source.getUserId());
+        } else if (source instanceof GroupSource) {
+          userProfileResponse = client.getGroupMemberProfile(((GroupSource) source).getGroupId(), source.getUserId());
+        } else {
+          userProfileResponse = client.getProfile(source.getUserId());
+        }
         displayName = userProfileResponse.get().getDisplayName();
       } catch (Exception ignore) {
         displayName = "";
