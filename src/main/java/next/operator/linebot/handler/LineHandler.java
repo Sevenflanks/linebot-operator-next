@@ -8,11 +8,7 @@ import com.linecorp.bot.model.event.FollowEvent;
 import com.linecorp.bot.model.event.JoinEvent;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.event.source.GroupSource;
-import com.linecorp.bot.model.event.source.RoomSource;
-import com.linecorp.bot.model.event.source.Source;
 import com.linecorp.bot.model.message.TextMessage;
-import com.linecorp.bot.model.profile.UserProfileResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +17,6 @@ import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ValidationException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -40,7 +35,7 @@ public class LineHandler {
   @EventMapping
   public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
     log.debug("TextMessageEvent: {}", event);
-    setCurrentUserName(event);
+    setCurrentUser(event);
 
     TextMessage response = null;
 
@@ -113,17 +108,8 @@ public class LineHandler {
 //    log.debug("Received message(Ignored): {}", event);
 //  }
 
-  private void setCurrentUserName(Event event) {
-    final Source source = event.getSource();
-    final CompletableFuture<UserProfileResponse> userProfileResponse;
-    if (source instanceof RoomSource) {
-      userProfileResponse = client.getRoomMemberProfile(((RoomSource) source).getRoomId(), source.getUserId());
-    } else if (source instanceof GroupSource) {
-      userProfileResponse = client.getGroupMemberProfile(((GroupSource) source).getGroupId(), source.getUserId());
-    } else {
-      userProfileResponse = client.getProfile(source.getUserId());
-    }
-    userDao.currentUserNameFuture.set(userProfileResponse);
+  private void setCurrentUser(Event event) {
+    userDao.currentSource.set(event.getSource());
   }
 
   private void cleanCurrentUser() {
