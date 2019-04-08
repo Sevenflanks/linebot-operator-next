@@ -5,6 +5,7 @@ import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.linebot.service.RespondentTalkable;
 import next.operator.rolldice.service.GachaService;
+import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ import java.util.function.Consumer;
 
 @Service
 public class GachaTalker implements RespondentTalkable {
+
+  @Autowired
+  private UserDao userDao;
 
   @Autowired
   private GachaService gachaService;
@@ -33,6 +37,8 @@ public class GachaTalker implements RespondentTalkable {
     final List<GachaService.Unit> results = gachaService.tenPumping();
 
     final StringBuilder sb = new StringBuilder();
+    sb.append(userDao.getCurrentUserName()).append("\n");
+
     int goldCnt = 0;
     for (int i = 0; i < results.size(); i++) {
       final GachaService.Unit unit = results.get(i);
@@ -45,7 +51,7 @@ public class GachaTalker implements RespondentTalkable {
       sb.append(unit.getName());
 
       // 每五個換一行
-      if (i % 5 == 4 && i < results.size()) {
+      if (i % 5 == 4 && i < results.size() - 1) {
         sb.append("\n");
       }
     }
