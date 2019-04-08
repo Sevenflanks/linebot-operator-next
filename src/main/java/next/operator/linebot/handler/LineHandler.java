@@ -21,6 +21,7 @@ import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ValidationException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -113,23 +114,20 @@ public class LineHandler {
 //  }
 
   private void setCurrentUserName(Event event) {
-    try {
-      final Source source = event.getSource();
-      final UserProfileResponse userProfileResponse;
-      if (source instanceof RoomSource) {
-        userProfileResponse = client.getRoomMemberProfile(((RoomSource) source).getRoomId(), source.getUserId()).get();
-      } else if (source instanceof GroupSource) {
-        userProfileResponse = client.getGroupMemberProfile(((GroupSource) source).getGroupId(), source.getUserId()).get();
-      } else {
-        userProfileResponse = client.getProfile(source.getUserId()).get();
-      }
-      userDao.currentUserName.set(userProfileResponse.getDisplayName());
-    } catch (InterruptedException | ExecutionException ignored) {
+    final Source source = event.getSource();
+    final CompletableFuture<UserProfileResponse> userProfileResponse;
+    if (source instanceof RoomSource) {
+      userProfileResponse = client.getRoomMemberProfile(((RoomSource) source).getRoomId(), source.getUserId());
+    } else if (source instanceof GroupSource) {
+      userProfileResponse = client.getGroupMemberProfile(((GroupSource) source).getGroupId(), source.getUserId());
+    } else {
+      userProfileResponse = client.getProfile(source.getUserId());
     }
+    userDao.currentUserNameFuture.set(userProfileResponse);
   }
 
   private void cleanCurrentUser() {
-    userDao.currentUserName.set(null);
+    userDao.clear();
   }
 
 }
