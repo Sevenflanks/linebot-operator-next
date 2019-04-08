@@ -39,13 +39,13 @@ public class GachaTalker implements RespondentTalkable {
     final StringBuilder sb = new StringBuilder();
     sb.append("@").append(userDao.getCurrentUserName()).append("\n");
 
-    int goldCnt = 0;
+    int silverCnt = 0;
     for (int i = 0; i < results.size(); i++) {
       final GachaService.Unit unit = results.get(i);
 
       // 計算是否為保底
-      if (unit.getName().equals(GachaService.金)) {
-        goldCnt++;
+      if (unit.getName().equals(GachaService.銀)) {
+        silverCnt++;
       }
 
       sb.append(unit.getName());
@@ -56,7 +56,7 @@ public class GachaTalker implements RespondentTalkable {
       }
     }
 
-    if (goldCnt == 1) {
+    if (silverCnt == 9) {
       sb.append("(保底)");
     }
 
