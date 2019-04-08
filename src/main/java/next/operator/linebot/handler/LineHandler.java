@@ -1,6 +1,5 @@
 package next.operator.linebot.handler;
 
-import com.google.common.base.Strings;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
@@ -9,17 +8,19 @@ import com.linecorp.bot.model.event.FollowEvent;
 import com.linecorp.bot.model.event.JoinEvent;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.source.GroupSource;
+import com.linecorp.bot.model.event.source.RoomSource;
+import com.linecorp.bot.model.event.source.Source;
 import com.linecorp.bot.model.message.TextMessage;
+import com.linecorp.bot.model.profile.UserProfileResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import lombok.extern.slf4j.Slf4j;
-import next.operator.common.uncheck.Uncheck;
 import next.operator.linebot.service.RespondentService;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ValidationException;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -113,8 +114,16 @@ public class LineHandler {
 
   private void setCurrentUserName(Event event) {
     try {
-      userDao.currentUserName.set(Optional.ofNullable(Strings.emptyToNull(client.getProfile(event.getSource().getUserId()).get().getDisplayName()))
-          .orElseGet(Uncheck.get(() -> client.getGroupMemberProfile(event.getSource().getSenderId(), event.getSource().getUserId()).get().getDisplayName())));
+      final Source source = event.getSource();
+      final UserProfileResponse userProfileResponse;
+      if (source instanceof RoomSource) {
+        userProfileResponse = client.getRoomMemberProfile(((RoomSource) source).getRoomId(), source.getUserId()).get();
+      } else if (source instanceof GroupSource) {
+        userProfileResponse = client.getGroupMemberProfile(((GroupSource) source).getGroupId(), source.getUserId()).get();
+      } else {
+        userProfileResponse = client.getProfile(source.getUserId()).get();
+      }
+      userDao.currentUserName.set(userProfileResponse.getDisplayName());
     } catch (InterruptedException | ExecutionException ignored) {
     }
   }
