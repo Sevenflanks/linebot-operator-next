@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.List;
 
 /**
@@ -36,10 +35,10 @@ public class GachaService {
       new Unit(彩,  1_999),
       new Unit(金, 98_000));
 
-  private SecureRandom secureRandom;
+//  private SecureRandom secureRandom;
 
   public GachaService() throws NoSuchAlgorithmException {
-    this.secureRandom = SecureRandom.getInstanceStrong();
+//    this.secureRandom = SecureRandom.getInstanceStrong();
   }
 
   public Unit singlePumping() {
@@ -47,8 +46,8 @@ public class GachaService {
   }
   public Unit singlePumping(List<Unit> units) {
     // 本次抽出
-    final int e = secureRandom.nextInt(100_000);
-    log.debug("pumping {}", e);
+    final int e = (int) (Math.random() * 100_000);
+//    log.debug("pumping {}", e);
 
     int lastSpacing = 0;
     for (Unit unit : units) {
