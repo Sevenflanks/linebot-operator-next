@@ -25,15 +25,15 @@ public class GachaService {
 
   // 通常機率
   final List<Unit> PCRD_UNITS = Lists.newArrayList(
-      new Unit(蘿,      1),
-      new Unit(彩,  1_999),
+      new Unit(蘿,    100),
+      new Unit(彩,  1_900),
       new Unit(金, 18_000),
       new Unit(銀, 80_000));
 
   // 保底機率
   final List<Unit> PCRD_UNITS_GUARANTEE = Lists.newArrayList(
-      new Unit(蘿,      1),
-      new Unit(彩,  1_999),
+      new Unit(蘿,    100),
+      new Unit(彩,  1_900),
       new Unit(金, 98_000));
 
   private final SplittableRandom random;
