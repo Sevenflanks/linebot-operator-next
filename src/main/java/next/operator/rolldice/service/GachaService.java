@@ -45,6 +45,9 @@ public class GachaService {
   public Unit singlePumping() {
     return this.singlePumping(PCRD_UNITS);
   }
+  public Unit guaranteePumping() {
+    return this.singlePumping(PCRD_UNITS_GUARANTEE);
+  }
   public Unit singlePumping(List<Unit> units) {
     // 本次抽出
     final int e = random.nextInt(100_000);
