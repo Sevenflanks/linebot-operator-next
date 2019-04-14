@@ -9,6 +9,7 @@ import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 @Service
@@ -36,18 +37,10 @@ public class GachaTalker implements RespondentTalkable {
     sb.append("@").append(userDao.getCurrentUserName()).append("\n");
 
     int silverCnt = 0;
+    final List<GachaService.Unit> units = gachaService.tenPumping();
     for (int i = 0; i < 10; i++) {
-      final GachaService.Unit unit;
-
-      // 當出現9銀的時候最後一抽必須保底
-      if (silverCnt == 9) {
-        unit = gachaService.guaranteePumping();
-        sb.append(unit.getName());
-        sb.append("(保底)");
-      } else {
-        unit = gachaService.singlePumping();
-        sb.append(unit.getName());
-      }
+      final GachaService.Unit unit = units.get(i);
+      sb.append(unit.getName());
 
       // 計算銀出現的次數，做為保底依據
       if (unit.getName().equals(GachaService.銀)) {
@@ -59,6 +52,10 @@ public class GachaTalker implements RespondentTalkable {
       if (i % 5 == 4 && i < 9) {
         sb.append("\n");
       }
+    }
+
+    if (silverCnt == 9) {
+      sb.append("(保底)");
     }
 
     return sb.toString();
