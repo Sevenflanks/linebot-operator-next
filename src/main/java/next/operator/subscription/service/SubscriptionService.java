@@ -43,13 +43,13 @@ public class SubscriptionService {
   @Transactional
   public void deSubscribe(Source source) {
     Optional.ofNullable(subscriptionDao.findBySubscriber_SubscriberId(source.getUserId()))
-        .ifPresent(subscriptionDao::delete);
+        .ifPresent(s -> s.forEach(subscriptionDao::delete));
   }
 
   @Transactional
   public void deSubscribe(Source source, Long id) {
     final Subscription subscription =
-        Optional.ofNullable(subscriptionDao.findOne(id))
+        subscriptionDao.findById(id)
             .orElseThrow(() -> new ValidationException("ID:" + id + ")這一則訂閱不存在喔！"));
     subscriptionDao.delete(subscription);
     if (!subscription.getSubscriber().getSubscriberId().equals(source.getUserId())) {
@@ -109,7 +109,8 @@ public class SubscriptionService {
   @Transactional
   public void push(Long id, String prefix) {
     log.info("pushing subscription, ID:{}", id);
-    final Subscription subscription = subscriptionDao.findOne(id);
+    final Subscription subscription = subscriptionDao.findById(id)
+        .orElseThrow(() -> new ValidationException("ID:" + id + ")這一則訂閱不存在喔！"));;
 
     final String response;
     // 如果是指令型，則自動觸發指令

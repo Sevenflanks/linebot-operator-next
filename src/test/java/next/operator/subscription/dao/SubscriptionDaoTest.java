@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ValidationException;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -58,12 +59,14 @@ public class SubscriptionDaoTest extends GenericTest {
     Assertions.assertThat(updated.getModifyTime()).isNotNull();
     Assertions.assertThat(updated.getMsg()).isEqualTo(newMsg);
 
-    final Subscription found = subscriptionDao.findOne(savedId);
+    final Subscription found = subscriptionDao.findById(savedId)
+        .orElseThrow(() -> new ValidationException("ID:" + savedId + ")這一則訂閱不存在喔！"));
     Assertions.assertThat(found).isNotNull();
 
-    subscriptionDao.delete(savedId);
+    subscriptionDao.deleteById(savedId);
     subscriptionDao.flush();
-    final Subscription foundAfterDelete = subscriptionDao.findOne(savedId);
+    final Subscription foundAfterDelete = subscriptionDao.findById(savedId)
+        .orElseThrow(() -> new ValidationException("ID:" + savedId + ")這一則訂閱不存在喔！"));
     Assertions.assertThat(foundAfterDelete).isNull();
 
   }

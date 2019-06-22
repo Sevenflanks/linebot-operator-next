@@ -24,6 +24,8 @@ import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.profile.MembersIdsResponse;
 import com.linecorp.bot.model.profile.UserProfileResponse;
 import com.linecorp.bot.model.response.BotApiResponse;
+import com.linecorp.bot.model.response.IssueLinkTokenResponse;
+import com.linecorp.bot.model.response.NumberOfMessagesResponse;
 import com.linecorp.bot.model.richmenu.RichMenu;
 import com.linecorp.bot.model.richmenu.RichMenuIdResponse;
 import com.linecorp.bot.model.richmenu.RichMenuListResponse;
@@ -37,6 +39,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -77,6 +80,21 @@ public class TestApp {
       @Override
       public CompletableFuture<MessageContentResponse> getMessageContent(String messageId) {
         log.info("getMessageContent:" + messageId);
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<NumberOfMessagesResponse> getNumberOfSentReplyMessages(String date) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<NumberOfMessagesResponse> getNumberOfSentPushMessages(String date) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<NumberOfMessagesResponse> getNumberOfSentMulticastMessages(String date) {
         return null;
       }
 
@@ -144,7 +162,17 @@ public class TestApp {
       }
 
       @Override
+      public CompletableFuture<BotApiResponse> linkRichMenuIdToUsers(List<String> userIds, String richMenuId) {
+        return null;
+      }
+
+      @Override
       public CompletableFuture<BotApiResponse> unlinkRichMenuIdFromUser(String userId) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<BotApiResponse> unlinkRichMenuIdFromUsers(List<String> userIds) {
         return null;
       }
 
@@ -160,6 +188,26 @@ public class TestApp {
 
       @Override
       public CompletableFuture<RichMenuListResponse> getRichMenuList() {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<BotApiResponse> setDefaultRichMenu(String richMenuId) {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<RichMenuIdResponse> getDefaultRichMenuId() {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<BotApiResponse> cancelDefaultRichMenu() {
+        return null;
+      }
+
+      @Override
+      public CompletableFuture<IssueLinkTokenResponse> issueLinkToken(String userId) {
         return null;
       }
     };
