@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.5.RELEASE</version>
+        <version>2.2.4.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -52,25 +52,11 @@
             <artifactId>hibernate-java8</artifactId>
         </dependency>
 
-        <!-- HikariCP -->
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>2.6.1</version>
-        </dependency>
-
         <!-- JDBC -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.4.1212</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
-        <dependency>
-            <groupId>postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.4.1208-jdbc42-atlassian-hosted</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- JSR-303 Bean Validation -->
@@ -126,15 +112,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.16</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- google api -->
-        <dependency>
-            <groupId>com.google.apis</groupId>
-            <artifactId>google-api-services-safebrowsing</artifactId>
-            <version>v4-rev27-1.22.0</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
