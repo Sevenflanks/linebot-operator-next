@@ -20,17 +20,6 @@ import java.util.List;
 @ComponentScan(basePackages = {"next.operator.**.web"}, useDefaultFilters = false, includeFilters = @Filter({Controller.class}))
 public class WebMvcConfig implements WebMvcConfigurer {
 
-//	@Bean
-//	@Primary
-//	public com.linecorp.bot.spring.boot.interceptor.LineBotServerInterceptor lineBotServerInterceptor() {
-//		return new next.operator.config.linebot.LineBotServerInterceptor ();
-//	}
-//
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		registry.addInterceptor(lineBotServerInterceptor());
-//	}
-
 	@Autowired
 	private WebObjectMapper objectMapper;
 

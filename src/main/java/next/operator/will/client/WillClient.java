@@ -5,6 +5,7 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.will.exception.WillException;
 import next.operator.will.model.ResponseModel;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 /** 串薇兒的API */
 @Component
+@ConditionalOnProperty("will.url")
 public class WillClient {
 
   public static final Pattern pattern = Pattern.compile("^W:(.+?:)*");

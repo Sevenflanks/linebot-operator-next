@@ -40,7 +40,7 @@ public class RespondentService {
   @Autowired
   private LineMessagingClient client;
 
-  @Autowired
+  @Autowired(required = false)
   private WillClient willClient;
 
   @Autowired
