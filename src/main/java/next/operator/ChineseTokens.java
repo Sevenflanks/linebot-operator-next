@@ -8,7 +8,12 @@ import com.aliasi.spell.WeightedEditDistance;
 import com.aliasi.util.AbstractExternalizable;
 import com.aliasi.util.Compilable;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;

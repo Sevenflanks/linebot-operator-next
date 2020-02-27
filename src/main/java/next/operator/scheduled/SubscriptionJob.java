@@ -1,5 +1,6 @@
 package next.operator.scheduled;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import next.operator.subscription.dao.SubscriptionDao;
 import next.operator.subscription.entity.Subscription;
@@ -25,16 +26,12 @@ import java.util.Locale;
 @Slf4j
 @Component
 @Order(3)
+@RequiredArgsConstructor
 public class SubscriptionJob {
 
-  @Autowired
-  private TaskScheduler taskScheduler;
-
-  @Autowired
-  private SubscriptionDao subscriptionDao;
-
-  @Autowired
-  private SubscriptionService subscriptionService;
+  private final TaskScheduler taskScheduler;
+  private final SubscriptionDao subscriptionDao;
+  private final SubscriptionService subscriptionService;
 
   /**
    * 由於目前伺服器會有待機狀態, 醒來後要檢查

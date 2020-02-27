@@ -3,6 +3,7 @@ package next.operator.linebot.executor.impl;
 import com.google.common.collect.Lists;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import lombok.RequiredArgsConstructor;
 import next.operator.common.uncheck.Uncheck;
 import next.operator.linebot.executor.FunctionExecutable;
 import next.operator.scheduled.SubscriptionJob;
@@ -10,7 +11,7 @@ import next.operator.subscription.dao.SubscriptionDao;
 import next.operator.subscription.entity.Subscription;
 import next.operator.subscription.service.SubscriptionService;
 import next.operator.user.dao.UserDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
@@ -24,20 +25,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Service
+@Component
+@RequiredArgsConstructor
 public class SubscriptionExecutor implements FunctionExecutable {
 
-  @Autowired
-  private SubscriptionDao subscriptionDao;
-
-  @Autowired
-  private SubscriptionService subscriptionService;
-
-  @Autowired
-  private SubscriptionJob subscriptionJob;
-
-  @Autowired
-  private UserDao userDao;
+  private final SubscriptionDao subscriptionDao;
+  private final SubscriptionService subscriptionService;
+  private final SubscriptionJob subscriptionJob;
+  private final UserDao userDao;
 
   static final List<String> ORDER_DELETE = Lists.newArrayList("delete", "刪");
   static final List<String> ORDER_DELETE_ALL = Lists.newArrayList("delete_all", "刪全部");

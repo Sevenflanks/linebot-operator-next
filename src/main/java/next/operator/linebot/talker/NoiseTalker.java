@@ -3,8 +3,10 @@ package next.operator.linebot.talker;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import lombok.RequiredArgsConstructor;
 import next.operator.linebot.service.RespondentTalkable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +18,12 @@ import java.util.function.Consumer;
  * 當對話中出現[要不要][去不去]等N不N文法時
  * 隨機回垃圾話: N or 不N
  */
-@Service
+@Component
+@RequiredArgsConstructor
 public class NoiseTalker implements RespondentTalkable {
-  public static final String[] SUFFIXES = {"", "喔", "唄", "啦", "唷"};
+  private final List<AbstractNoiscePattern> extraPatterns;
 
-  @Autowired
-  private List<AbstractNoiscePattern> extraPatterns;
+  public static final String[] SUFFIXES = {"", "喔", "唄", "啦", "唷"};
 
   private ThreadLocal<NoisceMatcher> currentMached = new ThreadLocal<>();
 

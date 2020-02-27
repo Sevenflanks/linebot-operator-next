@@ -15,6 +15,7 @@ import next.operator.subscription.entity.Subscriber;
 import next.operator.subscription.entity.Subscription;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Slf4j
-@Service
+@Component
 public class SubscriptionService {
 
   @Autowired private SubscriptionDao subscriptionDao;

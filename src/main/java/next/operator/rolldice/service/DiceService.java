@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
 import next.operator.rolldice.model.DiceModel;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
@@ -17,7 +18,7 @@ import java.util.stream.Stream;
  * 擲骰功能
  */
 @Slf4j
-@Service
+@Component
 public class DiceService {
 
   /**

@@ -8,30 +8,28 @@ import com.linecorp.bot.model.event.JoinEvent;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
-import com.linecorp.bot.spring.boot.annotation.EventMapping;
-import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import lombok.extern.slf4j.Slf4j;
 import next.operator.linebot.service.RespondentService;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ValidationException;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
-@LineMessageHandler
+@Component
 public class LineHandler {
-
-  @Autowired
-  private LineMessagingClient client;
 
   @Autowired
   private UserDao userDao;
 
   @Autowired
+  private LineMessagingClient client;
+
+  @Autowired
   private RespondentService respondentService;
 
-  @EventMapping
   public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
     log.debug("TextMessageEvent: {}", event);
     setCurrentUser(event);
@@ -71,7 +69,6 @@ public class LineHandler {
   /**
    * 加入好友
    */
-  @EventMapping
   public void handleFollowEvent(FollowEvent event) {
     log.info("Followed this bot: {}", event);
     String message;
@@ -88,7 +85,6 @@ public class LineHandler {
   /**
    * 被加入群組
    */
-  @EventMapping
   public void handleJoinEvent(JoinEvent event) {
     log.info("Joined: {}", event);
     client.replyMessage(new ReplyMessage(event.getReplyToken(), new TextMessage("安安你好掰掰去洗澡~")));

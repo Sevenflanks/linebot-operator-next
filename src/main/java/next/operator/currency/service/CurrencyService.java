@@ -2,13 +2,14 @@ package next.operator.currency.service;
 
 import lombok.extern.slf4j.Slf4j;
 import next.operator.currency.model.CurrencyExrateModel;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
 import java.util.List;
 
 @Slf4j
-@Service
+@Component
 public class CurrencyService {
 
   public static List<CurrencyExrateModel> exrateDatas;

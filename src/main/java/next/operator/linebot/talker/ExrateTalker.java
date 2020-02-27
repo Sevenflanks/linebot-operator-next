@@ -12,6 +12,7 @@ import next.operator.linebot.service.RespondentTalkable;
 import next.operator.utils.NumberUtils;
 import org.ansj.domain.Term;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,7 +23,7 @@ import java.util.function.Consumer;
 /**
  * 當對話中出現錢幣關鍵字時提供匯率資料
  */
-@Service
+@Component
 public class ExrateTalker implements RespondentTalkable {
 
   @Autowired

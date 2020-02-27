@@ -6,6 +6,7 @@ import next.operator.config.WebObjectMapper;
 import next.operator.currency.model.CurrencyExrateModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,7 +14,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.*;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +27,7 @@ import java.util.stream.Collectors;
  * 本程式使用到了 全球即時匯率API(https://tw.rter.info/howto_currencyapi.php)
  */
 @Slf4j
-@Service
+@Component
 public class CurrencyExtRateDataLoader {
 
   private final URI dataUrl;

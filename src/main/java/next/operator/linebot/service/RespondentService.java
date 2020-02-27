@@ -5,14 +5,14 @@ import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import next.operator.user.dao.UserDao;
 import next.operator.will.client.WillClient;
 import next.operator.will.exception.WillException;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.DicAnalysis;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
@@ -28,23 +28,15 @@ import java.util.stream.Stream;
  * 處理純文字類型的訪問
  */
 @Slf4j
-@Service
+@Component
+@RequiredArgsConstructor
 public class RespondentService {
 
-  @Autowired
-  private List<RespondentExecutable> executors;
-
-  @Autowired
-  private List<RespondentTalkable> talkers;
-
-  @Autowired
-  private LineMessagingClient client;
-
-  @Autowired(required = false)
-  private WillClient willClient;
-
-  @Autowired
-  private UserDao userDao;
+  private final List<RespondentExecutable> executors;
+  private final List<RespondentTalkable> talkers;
+  private final LineMessagingClient client;
+  private final WillClient willClient;
+  private final UserDao userDao;
 
   public static ThreadLocal<List<Term>> currentTern = new ThreadLocal<>();
   public static ThreadLocal<MessageEvent<TextMessageContent>> currentEvent = new ThreadLocal<>();

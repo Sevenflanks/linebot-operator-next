@@ -10,6 +10,7 @@ import next.operator.rolldice.model.DiceModel;
 import next.operator.rolldice.service.DiceService;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-@Service
+@Component
 public class RollingDiceExecutor implements FunctionExecutable {
 
   @Autowired

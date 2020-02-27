@@ -6,9 +6,9 @@ import next.operator.calculate.service.CalculateService;
 import next.operator.linebot.executor.FunctionExecutable;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class CalcExecutor implements FunctionExecutable {
 
   @Autowired

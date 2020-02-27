@@ -7,12 +7,13 @@ import next.operator.linebot.service.RespondentTalkable;
 import next.operator.rolldice.service.GachaService;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-@Service
+@Component
 public class GachaTalker implements RespondentTalkable {
 
   @Autowired

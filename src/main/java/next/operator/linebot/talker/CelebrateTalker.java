@@ -8,6 +8,7 @@ import next.operator.linebot.service.RespondentService;
 import next.operator.linebot.service.RespondentTalkable;
 import next.operator.record.entity.Record;
 import org.ansj.domain.Term;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -19,7 +20,7 @@ import java.util.function.Consumer;
 /**
  * 新年快樂，中秋節快樂等，總之遇到快樂的時候把前面的字拿出來複誦一遍
  */
-@Service
+@Component
 public class CelebrateTalker implements RespondentTalkable {
 
   private static final String KEY_WORD = "快樂";

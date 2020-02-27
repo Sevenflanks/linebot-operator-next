@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
@@ -15,7 +16,7 @@ import java.util.SplittableRandom;
  * 轉蛋功能
  */
 @Slf4j
-@Service
+@Component
 public class GachaService {
 
   public static final String 銀 = "[銀]";

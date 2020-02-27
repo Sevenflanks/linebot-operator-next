@@ -8,6 +8,7 @@ import next.operator.currency.service.CurrencyService;
 import next.operator.linebot.executor.FunctionExecutable;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ValidationException;
@@ -16,7 +17,7 @@ import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
-@Service
+@Component
 public class ExrateExecutor implements FunctionExecutable {
 
   @Autowired

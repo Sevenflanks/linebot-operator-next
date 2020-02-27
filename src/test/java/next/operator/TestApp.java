@@ -18,24 +18,28 @@ package next.operator;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
+import com.linecorp.bot.model.Broadcast;
 import com.linecorp.bot.model.Multicast;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.profile.MembersIdsResponse;
 import com.linecorp.bot.model.profile.UserProfileResponse;
 import com.linecorp.bot.model.response.BotApiResponse;
+import com.linecorp.bot.model.response.GetNumberOfFollowersResponse;
+import com.linecorp.bot.model.response.GetNumberOfMessageDeliveriesResponse;
 import com.linecorp.bot.model.response.IssueLinkTokenResponse;
+import com.linecorp.bot.model.response.MessageQuotaResponse;
 import com.linecorp.bot.model.response.NumberOfMessagesResponse;
+import com.linecorp.bot.model.response.QuotaConsumptionResponse;
+import com.linecorp.bot.model.response.demographics.GetFriendsDemographicsResponse;
 import com.linecorp.bot.model.richmenu.RichMenu;
 import com.linecorp.bot.model.richmenu.RichMenuIdResponse;
 import com.linecorp.bot.model.richmenu.RichMenuListResponse;
 import com.linecorp.bot.model.richmenu.RichMenuResponse;
-import com.linecorp.bot.spring.boot.LineBotAutoConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 
@@ -43,9 +47,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
-@SpringBootApplication(
-    exclude = {LineBotAutoConfiguration.class}
-)
+//@SpringBootApplication(
+//    exclude = {LineBotAutoConfiguration.class}
+//)
 public class TestApp {
 
   public static void main(String[] args) {
@@ -77,9 +81,21 @@ public class TestApp {
         return null;
       }
 
+      @Override public CompletableFuture<BotApiResponse> broadcast(Broadcast broadcast) {
+        return null;
+      }
+
       @Override
       public CompletableFuture<MessageContentResponse> getMessageContent(String messageId) {
         log.info("getMessageContent:" + messageId);
+        return null;
+      }
+
+      @Override public CompletableFuture<MessageQuotaResponse> getMessageQuota() {
+        return null;
+      }
+
+      @Override public CompletableFuture<QuotaConsumptionResponse> getMessageQuotaConsumption() {
         return null;
       }
 
@@ -95,6 +111,10 @@ public class TestApp {
 
       @Override
       public CompletableFuture<NumberOfMessagesResponse> getNumberOfSentMulticastMessages(String date) {
+        return null;
+      }
+
+      @Override public CompletableFuture<NumberOfMessagesResponse> getNumberOfSentBroadcastMessages(String date) {
         return null;
       }
 
@@ -208,6 +228,18 @@ public class TestApp {
 
       @Override
       public CompletableFuture<IssueLinkTokenResponse> issueLinkToken(String userId) {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetNumberOfMessageDeliveriesResponse> getNumberOfMessageDeliveries(String date) {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetNumberOfFollowersResponse> getNumberOfFollowers(String date) {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetFriendsDemographicsResponse> getFriendsDemographics() {
         return null;
       }
     };

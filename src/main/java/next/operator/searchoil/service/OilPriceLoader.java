@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.util.List;
  * 取得當前及時油價
  * 本程式使用到了 油價,汽油價格查詢預測(http://www.taiwanoil.org/)
  */
-@Service
+@Component
 public class OilPriceLoader {
 
   private final String dataUr = "http://www.taiwanoil.org/z.php?z=oiltw&c=94abf0&tz=Asia/Taipei&tf=1";

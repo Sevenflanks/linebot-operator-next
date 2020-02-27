@@ -17,36 +17,14 @@
 package next.operator;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication()
+//@SpringBootApplication()
 @EnableScheduling
 public class App {
 
   public static void main(String[] args) {
     SpringApplication.run(App.class, args);
   }
-
-//  @Configuration
-//  public static class SecurityConfig extends WebSecurityConfigurerAdapter {
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-////      http.formLogin()
-////          .loginPage("/login.html")
-////          .loginProcessingUrl("/login")
-////          .permitAll();
-////      http.logout()
-////          .logoutUrl("/logout");
-//      http.csrf()
-//          .disable();
-//
-////      http.authorizeRequests()
-////          .antMatchers("/login.html", "/**/*.css", "/img/**", "/third-party/**")
-////          .permitAll();
-//      http.authorizeRequests().antMatchers("/**").authenticated();
-//      http.httpBasic();
-//    }
-//  }
 
 }

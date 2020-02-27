@@ -5,13 +5,14 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.linebot.executor.FunctionExecutable;
 import next.operator.linebot.executor.HelperExecutable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Service
+@Component
 public class HelpExecutor implements HelperExecutable {
 
   @Autowired
