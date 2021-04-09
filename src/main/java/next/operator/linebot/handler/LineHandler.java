@@ -14,10 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import next.operator.linebot.service.RespondentService;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 
 import javax.validation.ValidationException;
 import java.util.concurrent.ExecutionException;
 
+@Profile("prod")
 @Slf4j
 @LineMessageHandler
 public class LineHandler {
