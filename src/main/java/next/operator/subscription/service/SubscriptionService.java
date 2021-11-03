@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.MessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.source.Source;
 import com.linecorp.bot.model.message.TextMessage;
@@ -117,9 +118,8 @@ public class SubscriptionService {
     if (RespondentService.isCommand(subscription.getMsg())) {
       // 產生一個假的event
       final MessageEvent<TextMessageContent> event =
-          new MessageEvent<>(
-              null,
-              new Source() {
+          MessageEvent.<TextMessageContent>builder()
+              .source(new Source() {
                 @Override
                 public String getUserId() {
                   return subscription.getSubscriber().getSubscriberId();
@@ -129,9 +129,10 @@ public class SubscriptionService {
                 public String getSenderId() {
                   return subscription.getSubscriber().getSubscribeTo();
                 }
-              },
-              new TextMessageContent(null, subscription.getMsg()),
-              Instant.now());
+              })
+              .message(TextMessageContent.builder().text(subscription.getMsg()).build())
+              .timestamp(Instant.now())
+              .build();
 
       response =
           Optional.ofNullable(respondentService.response(event))
