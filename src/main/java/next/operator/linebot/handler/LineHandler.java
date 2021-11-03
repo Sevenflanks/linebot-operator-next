@@ -14,12 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import next.operator.linebot.service.RespondentService;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 
 import javax.validation.ValidationException;
 import java.util.concurrent.ExecutionException;
 
-@Profile("prod")
 @Slf4j
 @LineMessageHandler
 public class LineHandler {
@@ -57,19 +55,6 @@ public class LineHandler {
     return null;
   }
 
-//  @EventMapping
-//  public void handleDefaultMessageEvent(Event event) {
-//    log.info("DefaultMessageEvent: {}", event);
-//  }
-
-//  /**
-//   * 封鎖/刪除好友
-//   */
-//  @EventMapping
-//  public void handleUnfollowEvent(UnfollowEvent event) {
-//    log.info("Unfollowed this bot: {}", event);
-//  }
-
   /**
    * 加入好友
    */
@@ -95,21 +80,6 @@ public class LineHandler {
     log.info("Joined: {}", event);
     client.replyMessage(new ReplyMessage(event.getReplyToken(), new TextMessage("安安你好掰掰去洗澡~")));
   }
-
-//  @EventMapping
-//  public void handlePostbackEvent(PostbackEvent event) {
-//    log.info("Postbacked: {}", event);
-//  }
-
-//  @EventMapping
-//  public void handleBeaconEvent(BeaconEvent event) {
-//    log.info("Beacon: {}", event);
-//  }
-
-//  @EventMapping
-//  public void handleOtherEvent(Event event) {
-//    log.debug("Received message(Ignored): {}", event);
-//  }
 
   private void setCurrentUser(Event event) {
     userDao.currentSource.set(event.getSource());
