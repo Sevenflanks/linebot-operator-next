@@ -17,25 +17,53 @@
 package next.operator;
 
 import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.client.MessageContentResponse;
+import com.linecorp.bot.model.Broadcast;
 import com.linecorp.bot.model.Multicast;
+import com.linecorp.bot.model.Narrowcast;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.group.GroupMemberCountResponse;
+import com.linecorp.bot.model.group.GroupSummaryResponse;
 import com.linecorp.bot.model.profile.MembersIdsResponse;
 import com.linecorp.bot.model.profile.UserProfileResponse;
+import com.linecorp.bot.model.request.GetFollowersRequest;
+import com.linecorp.bot.model.request.SetWebhookEndpointRequest;
+import com.linecorp.bot.model.request.TestWebhookEndpointRequest;
 import com.linecorp.bot.model.response.BotApiResponse;
+import com.linecorp.bot.model.response.BotInfoResponse;
+import com.linecorp.bot.model.response.GetAggregationUnitNameListResponse;
+import com.linecorp.bot.model.response.GetAggregationUnitUsageResponse;
+import com.linecorp.bot.model.response.GetFollowersResponse;
+import com.linecorp.bot.model.response.GetMessageEventResponse;
+import com.linecorp.bot.model.response.GetNumberOfFollowersResponse;
+import com.linecorp.bot.model.response.GetNumberOfMessageDeliveriesResponse;
+import com.linecorp.bot.model.response.GetStatisticsPerUnitResponse;
+import com.linecorp.bot.model.response.GetWebhookEndpointResponse;
 import com.linecorp.bot.model.response.IssueLinkTokenResponse;
+import com.linecorp.bot.model.response.MessageQuotaResponse;
+import com.linecorp.bot.model.response.NarrowcastProgressResponse;
 import com.linecorp.bot.model.response.NumberOfMessagesResponse;
+import com.linecorp.bot.model.response.QuotaConsumptionResponse;
+import com.linecorp.bot.model.response.SetWebhookEndpointResponse;
+import com.linecorp.bot.model.response.TestWebhookEndpointResponse;
+import com.linecorp.bot.model.response.demographics.GetFriendsDemographicsResponse;
 import com.linecorp.bot.model.richmenu.RichMenu;
 import com.linecorp.bot.model.richmenu.RichMenuIdResponse;
 import com.linecorp.bot.model.richmenu.RichMenuListResponse;
 import com.linecorp.bot.model.richmenu.RichMenuResponse;
+import com.linecorp.bot.model.richmenualias.CreateRichMenuAliasRequest;
+import com.linecorp.bot.model.richmenualias.RichMenuAliasListResponse;
+import com.linecorp.bot.model.richmenualias.RichMenuAliasResponse;
+import com.linecorp.bot.model.richmenualias.UpdateRichMenuAliasRequest;
+import com.linecorp.bot.model.room.RoomMemberCountResponse;
 import com.linecorp.bot.spring.boot.LineBotAutoConfiguration;
+import com.linecorp.bot.spring.boot.LineBotProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 
@@ -46,6 +74,7 @@ import java.util.concurrent.CompletableFuture;
 @SpringBootApplication(
     exclude = {LineBotAutoConfiguration.class}
 )
+@EnableConfigurationProperties(LineBotProperties.class)
 public class TestApp {
 
   public static void main(String[] args) {
@@ -77,9 +106,23 @@ public class TestApp {
         return null;
       }
 
-      @Override
-      public CompletableFuture<MessageContentResponse> getMessageContent(String messageId) {
-        log.info("getMessageContent:" + messageId);
+      @Override public CompletableFuture<BotApiResponse> broadcast(Broadcast broadcast) {
+        return null;
+      }
+
+      @Override public CompletableFuture<BotApiResponse> narrowcast(Narrowcast broadcast) {
+        return null;
+      }
+
+      @Override public CompletableFuture<NarrowcastProgressResponse> getNarrowcastProgress(String requestId) {
+        return null;
+      }
+
+      @Override public CompletableFuture<MessageQuotaResponse> getMessageQuota() {
+        return null;
+      }
+
+      @Override public CompletableFuture<QuotaConsumptionResponse> getMessageQuotaConsumption() {
         return null;
       }
 
@@ -95,6 +138,10 @@ public class TestApp {
 
       @Override
       public CompletableFuture<NumberOfMessagesResponse> getNumberOfSentMulticastMessages(String date) {
+        return null;
+      }
+
+      @Override public CompletableFuture<NumberOfMessagesResponse> getNumberOfSentBroadcastMessages(String date) {
         return null;
       }
 
@@ -133,6 +180,18 @@ public class TestApp {
       @Override
       public CompletableFuture<BotApiResponse> leaveRoom(String roomId) {
         log.info("leaveRoom:" + roomId);
+        return null;
+      }
+
+      @Override public CompletableFuture<GroupSummaryResponse> getGroupSummary(String groupId) {
+        return null;
+      }
+
+      @Override public CompletableFuture<GroupMemberCountResponse> getGroupMemberCount(String groupId) {
+        return null;
+      }
+
+      @Override public CompletableFuture<RoomMemberCountResponse> getRoomMemberCount(String roomId) {
         return null;
       }
 
@@ -177,16 +236,6 @@ public class TestApp {
       }
 
       @Override
-      public CompletableFuture<MessageContentResponse> getRichMenuImage(String richMenuId) {
-        return null;
-      }
-
-      @Override
-      public CompletableFuture<BotApiResponse> setRichMenuImage(String richMenuId, String contentType, byte[] content) {
-        return null;
-      }
-
-      @Override
       public CompletableFuture<RichMenuListResponse> getRichMenuList() {
         return null;
       }
@@ -206,8 +255,80 @@ public class TestApp {
         return null;
       }
 
+      @Override public CompletableFuture<BotApiResponse> createRichMenuAlias(CreateRichMenuAliasRequest request) {
+        return null;
+      }
+
+      @Override public CompletableFuture<BotApiResponse> updateRichMenuAlias(String richMenuAliasId,
+          UpdateRichMenuAliasRequest request) {
+        return null;
+      }
+
+      @Override public CompletableFuture<RichMenuAliasResponse> getRichMenuAlias(String richMenuAliasId) {
+        return null;
+      }
+
+      @Override public CompletableFuture<RichMenuAliasListResponse> getRichMenuAliasList() {
+        return null;
+      }
+
+      @Override public CompletableFuture<BotApiResponse> deleteRichMenuAlias(String richMenuAliasId) {
+        return null;
+      }
+
       @Override
       public CompletableFuture<IssueLinkTokenResponse> issueLinkToken(String userId) {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetNumberOfMessageDeliveriesResponse> getNumberOfMessageDeliveries(String date) {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetNumberOfFollowersResponse> getNumberOfFollowers(String date) {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetFollowersResponse> getFollowers(GetFollowersRequest request) {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetMessageEventResponse> getMessageEvent(String requestId) {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetFriendsDemographicsResponse> getFriendsDemographics() {
+        return null;
+      }
+
+      @Override public CompletableFuture<BotInfoResponse> getBotInfo() {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetWebhookEndpointResponse> getWebhookEndpoint() {
+        return null;
+      }
+
+      @Override public CompletableFuture<SetWebhookEndpointResponse> setWebhookEndpoint(SetWebhookEndpointRequest request) {
+        return null;
+      }
+
+      @Override public CompletableFuture<TestWebhookEndpointResponse> testWebhookEndpoint(
+          TestWebhookEndpointRequest request) {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetStatisticsPerUnitResponse> getStatisticsPerUnit(String customAggregationUnit,
+          String from, String to) {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetAggregationUnitUsageResponse> getAggregationUnitUsage() {
+        return null;
+      }
+
+      @Override public CompletableFuture<GetAggregationUnitNameListResponse> getAggregationUnitNameList(String limit,
+          String start) {
         return null;
       }
     };

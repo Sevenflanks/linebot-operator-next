@@ -2,7 +2,7 @@ package next.operator.currency.service;
 
 import lombok.extern.slf4j.Slf4j;
 import next.operator.GenericTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j

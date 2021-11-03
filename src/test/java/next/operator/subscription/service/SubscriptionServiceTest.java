@@ -3,7 +3,7 @@ package next.operator.subscription.service;
 import next.operator.GenericTest;
 import next.operator.subscription.entity.Subscriber;
 import next.operator.subscription.entity.Subscription;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;

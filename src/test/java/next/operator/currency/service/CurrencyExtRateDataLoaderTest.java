@@ -1,7 +1,7 @@
 package next.operator.currency.service;
 
 import next.operator.GenericTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 

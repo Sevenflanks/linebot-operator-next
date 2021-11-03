@@ -3,7 +3,7 @@ package next.operator.linebot.talker;
 import next.operator.ChineseTokens;
 import next.operator.GenericTest;
 import next.operator.linebot.service.RespondentService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
