@@ -27,6 +27,10 @@ public class NoiseTalker implements RespondentTalkable {
 
   @Override
   public boolean isReadable(String message) {
+    if (!message.contains("詩")) {
+      // 如果沒被叫到名字, 就不要回應了, 被嫌吵太多次XD
+      return false;
+    }
     final Optional<NoisceMatcher> matched = extraPatterns.stream()
         .map(np -> np.match(message))
         .filter(NoisceMatcher::isMatched)
