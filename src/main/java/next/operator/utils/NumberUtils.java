@@ -25,7 +25,7 @@ public class NumberUtils {
 
   private static final Map<Character, Integer> CHINESE_MAP_NUM = Stream.of("0零〇,1壹一,2貳二兩,3參三,4肆四,5伍五,6陸六,7柒七,8捌八,9玖九".split(","))
       .flatMap(c -> c.substring(1).chars().mapToObj(s -> "" + c.charAt(0) + ((char)s)))
-      .collect(Collectors.toMap(c -> c.charAt(1), c -> (int) (c.charAt(0) - '0')));
+      .collect(Collectors.toMap(c -> c.charAt(1), c -> c.charAt(0) - '0'));
 
   public static final Double zhNumConvertToInt(String source) {
 
@@ -116,6 +116,11 @@ public class NumberUtils {
     } else {
       return zhNumConvertToInt(parts[0]) * v;
     }
+  }
+
+  public static void main(String[] args) {
+    System.out.println(zhNumConvertToInt("三十"));
+    System.out.println(zhNumConvertToInt("30"));
   }
 
 }
