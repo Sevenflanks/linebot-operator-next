@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 @Getter
@@ -29,7 +30,7 @@ public class CurrencyExrateModel {
     reversion.setExFrom(this.exTo);
     reversion.setExTo(this.exFrom);
     reversion.setTime(this.time);
-    reversion.setExrate(BigDecimal.ONE.divide(this.exrate, 6, BigDecimal.ROUND_HALF_UP));
+    reversion.setExrate(BigDecimal.ONE.divide(this.exrate, 6, RoundingMode.HALF_UP));
     return reversion;
   }
 
@@ -41,7 +42,7 @@ public class CurrencyExrateModel {
     } else {
       merged.exFrom = this.exFrom;
       merged.exTo = next.exTo;
-      merged.time = this.time.compareTo(next.time) > 0 ? next.time : this.time;
+      merged.time = this.time.isAfter(next.time) ? next.time : this.time;
       merged.exrate = this.exrate.multiply(next.exrate);
     }
     return merged;

@@ -200,6 +200,10 @@ public class TestApp {
         return null;
       }
 
+      @Override public CompletableFuture<BotApiResponse> validateRichMenuObject(RichMenu richMenu) {
+        return null;
+      }
+
       @Override
       public CompletableFuture<RichMenuIdResponse> createRichMenu(RichMenu richMenu) {
         return null;
