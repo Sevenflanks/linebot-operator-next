@@ -3,7 +3,6 @@ package next.operator.config;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import next.operator.ChineseTokens;
-import next.operator.linebot.handler.LineHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -37,11 +36,6 @@ public class ServiceConfig {
     RestTemplate restTemplate = new RestTemplate();
     restTemplate.setInterceptors(Collections.singletonList(new UserAgentInterceptor()));
     return restTemplate;
-  }
-
-  @Bean
-  public LineHandler lineHandler() {
-    return new LineHandler();
   }
 
   class UserAgentInterceptor implements ClientHttpRequestInterceptor {
