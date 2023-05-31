@@ -1,6 +1,7 @@
 package next.operator.config;
 
 import next.operator.ChineseTokens;
+import next.operator.linebot.handler.LineHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -38,11 +39,18 @@ public class ServiceConfig {
     return restTemplate;
   }
 
+  @Bean
+  public LineHandler lineHandler() {
+    return new LineHandler();
+  }
+
   class UserAgentInterceptor implements ClientHttpRequestInterceptor {
     @Override
-    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+        throws IOException {
       HttpHeaders headers = request.getHeaders();
-      headers.add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+      headers.add("User-Agent",
+          "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
       return execution.execute(request, body);
     }
   }

@@ -53,8 +53,8 @@ public class LineHandler {
     cleanCurrentUser();
     if (response != null) {
       client.replyMessage(new ReplyMessage(event.getReplyToken(), response));
-//      // ReplyToken的可靠度太低了, 很容易因為逾時或覆蓋而過期
-//      client.pushMessage(new PushMessage(event.getSource().getSenderId(), response));
+      // push有使用次數限制
+      //      client.pushMessage(new PushMessage(event.getSource().getSenderId(), response));
     }
     return null;
   }
@@ -73,7 +73,6 @@ public class LineHandler {
       log.error("get profile failed. userId:" + event.getSource().getUserId(), e);
     }
     client.replyMessage(new ReplyMessage(event.getReplyToken(), new TextMessage("安安你好" + message + "掰掰去洗澡~")));
-//    client.pushMessage(new PushMessage(event.getSource().getUserId(), new TextMessage("安安你好" + message + "掰掰去洗澡~")));
   }
 
   /**
