@@ -1,10 +1,10 @@
 package next.operator.currency.service;
 
 import lombok.extern.slf4j.Slf4j;
+import next.operator.common.validation.ValidationException;
 import next.operator.currency.model.CurrencyExrateModel;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ValidationException;
 import java.util.List;
 
 @Slf4j

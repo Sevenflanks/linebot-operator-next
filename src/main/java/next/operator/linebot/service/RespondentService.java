@@ -6,6 +6,7 @@ import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import lombok.extern.slf4j.Slf4j;
+import next.operator.common.validation.ValidationException;
 import next.operator.user.dao.UserDao;
 import next.operator.will.client.WillClient;
 import next.operator.will.exception.WillException;
@@ -17,7 +18,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
-import javax.validation.ValidationException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

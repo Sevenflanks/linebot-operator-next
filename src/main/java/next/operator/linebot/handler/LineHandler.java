@@ -11,13 +11,13 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import lombok.extern.slf4j.Slf4j;
+import next.operator.common.validation.ValidationException;
 import next.operator.linebot.service.RespondentService;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ValidationException;
 import java.util.concurrent.ExecutionException;
 
 @Profile("prod")

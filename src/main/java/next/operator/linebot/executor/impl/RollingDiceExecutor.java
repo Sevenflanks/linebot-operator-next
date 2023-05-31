@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import next.operator.common.validation.ValidationException;
 import next.operator.linebot.executor.FunctionExecutable;
 import next.operator.rolldice.model.DiceModel;
 import next.operator.rolldice.service.DiceService;
@@ -12,7 +13,6 @@ import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;

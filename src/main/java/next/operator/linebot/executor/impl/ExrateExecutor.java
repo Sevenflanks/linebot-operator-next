@@ -3,6 +3,7 @@ package next.operator.linebot.executor.impl;
 import com.google.common.primitives.Doubles;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import next.operator.common.validation.ValidationException;
 import next.operator.currency.model.CurrencyExrateModel;
 import next.operator.currency.service.CurrencyService;
 import next.operator.linebot.executor.FunctionExecutable;
@@ -10,7 +11,6 @@ import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;

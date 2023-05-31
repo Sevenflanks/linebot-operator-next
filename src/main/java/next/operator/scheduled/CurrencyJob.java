@@ -1,5 +1,6 @@
 package next.operator.scheduled;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import next.operator.currency.service.CurrencyExtRateDataLoader;
 import next.operator.currency.service.CurrencyService;
@@ -7,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 /**
  * 定期查全球匯率

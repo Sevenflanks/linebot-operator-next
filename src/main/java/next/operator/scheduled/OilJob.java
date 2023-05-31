@@ -1,5 +1,6 @@
 package next.operator.scheduled;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import next.operator.searchoil.model.OliPriceModel;
 import next.operator.searchoil.service.OilPriceLoader;
@@ -9,7 +10,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**

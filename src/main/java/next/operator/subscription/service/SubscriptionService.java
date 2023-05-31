@@ -4,11 +4,12 @@ import com.google.common.collect.Sets;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.event.MessageEvent;
-import com.linecorp.bot.model.event.message.MessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.source.Source;
 import com.linecorp.bot.model.message.TextMessage;
+import jakarta.validation.Validator;
 import lombok.extern.slf4j.Slf4j;
+import next.operator.common.validation.ValidationException;
 import next.operator.common.validation.ValidationUtils;
 import next.operator.linebot.service.RespondentService;
 import next.operator.subscription.dao.SubscriptionDao;
@@ -19,8 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ValidationException;
-import javax.validation.Validator;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -44,7 +43,7 @@ public class SubscriptionService {
   @Transactional
   public void deSubscribe(Source source) {
     Optional.ofNullable(subscriptionDao.findBySubscriber_SubscriberId(source.getUserId()))
-        .ifPresent(s -> s.forEach(subscriptionDao::delete));
+        .ifPresent(s -> subscriptionDao.deleteAll(s));
   }
 
   @Transactional
@@ -98,7 +97,7 @@ public class SubscriptionService {
             .map(ValidationUtils::from);
     ValidationUtils.requiredMsgsEmpty(subscriptionMsgs, subscriberMsgs);
 
-    log.info("subscribed Subscription:{}" + subscription);
+    log.info("subscribed Subscription:{}", subscription);
     return subscriptionDao.save(subscription);
   }
 

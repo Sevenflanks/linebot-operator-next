@@ -1,13 +1,12 @@
 package next.operator.subscription.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import next.operator.common.persistence.GenericEmbeddedEntity;
 import next.operator.common.validation.Label;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 @SuppressWarnings("serial")
 @Embeddable

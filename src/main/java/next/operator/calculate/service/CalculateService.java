@@ -2,10 +2,10 @@ package next.operator.calculate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.jeval.EvaluationException;
+import next.operator.common.validation.ValidationException;
 import next.operator.utils.NumberUtils;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ValidationException;
 import java.math.BigDecimal;
 
 /**

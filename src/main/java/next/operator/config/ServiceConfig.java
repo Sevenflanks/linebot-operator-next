@@ -1,5 +1,7 @@
 package next.operator.config;
 
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import next.operator.ChineseTokens;
 import next.operator.linebot.handler.LineHandler;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +15,6 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestTemplate;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
 import java.io.IOException;
 import java.util.Collections;
 

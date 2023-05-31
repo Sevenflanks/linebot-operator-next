@@ -1,6 +1,7 @@
 package next.operator.subscription.dao;
 
 import next.operator.GenericTest;
+import next.operator.common.validation.ValidationException;
 import next.operator.subscription.entity.Subscriber;
 import next.operator.subscription.entity.Subscription;
 import org.assertj.core.api.Assertions;
@@ -8,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ValidationException;
 import java.time.Duration;
 import java.time.Instant;
 

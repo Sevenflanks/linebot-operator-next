@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /** 串薇兒的API */
 @Component
@@ -38,13 +37,13 @@ public class WillClient {
   public String talkToWill(MessageEvent<TextMessageContent> event) {
     final ResponseEntity<ResponseModel> response = restTemplate.postForEntity(willUrl, event, ResponseModel.class);
 
-    if (response.getStatusCodeValue() == 200 && response.getBody().isMessageEmpty()) {
+    if (response.getStatusCode().value() == 200 && response.getBody() != null && response.getBody().isMessageEmpty()) {
       return response.getBody().getData();
-    } else if (response.getStatusCodeValue() == 200) {
-      throw new WillException(response.getBody().getMessages().stream().collect(Collectors.joining("\n")));
+    } else if (response.getStatusCode().value() == 200 && response.getBody() != null) {
+      throw new WillException(String.join("\n", response.getBody().getMessages()));
     } else {
       // 若發生錯誤則拿訊息回來
-      throw new WillException(response.getStatusCode().getReasonPhrase());
+      throw new WillException(response.getStatusCode().toString());
     }
   }
 

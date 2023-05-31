@@ -3,20 +3,20 @@ package next.operator.common.validation;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class ValidationException extends javax.validation.ValidationException {
+public class ValidationException extends IllegalArgumentException {
 
   @Getter
   private List<String> messages;
 
-  ValidationException(List<String> messages) {
-    this.messages = messages;
+  public ValidationException(String message) {
+    super(message);
+    this.messages = List.of(message);
   }
 
-  @Override
-  public String getMessage() {
-    return this.messages.stream().collect(Collectors.joining(","));
+  public ValidationException(List<String> messages) {
+    super(String.join("; ", messages));
+    this.messages = messages;
   }
 
 }

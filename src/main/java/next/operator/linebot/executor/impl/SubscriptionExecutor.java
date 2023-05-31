@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import next.operator.common.uncheck.Uncheck;
+import next.operator.common.validation.ValidationException;
 import next.operator.linebot.executor.FunctionExecutable;
 import next.operator.scheduled.SubscriptionJob;
 import next.operator.subscription.dao.SubscriptionDao;
@@ -12,7 +13,6 @@ import next.operator.subscription.service.SubscriptionService;
 import next.operator.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.ValidationException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;

@@ -1,10 +1,10 @@
 package next.operator.common.persistence;
 
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreRemove;
+import jakarta.persistence.PreUpdate;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.PrePersist;
-import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
 @Slf4j

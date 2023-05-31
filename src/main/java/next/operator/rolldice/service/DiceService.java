@@ -4,10 +4,10 @@ import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.jeval.EvaluationException;
 import net.sourceforge.jeval.Evaluator;
+import next.operator.common.validation.ValidationException;
 import next.operator.rolldice.model.DiceModel;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;

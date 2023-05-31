@@ -2,9 +2,9 @@ package next.operator.common.validation;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import jakarta.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.validation.ConstraintViolation;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,8 @@
 package next.operator.common.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
 import java.time.Duration;
 
 /** 檢查Duration的範圍(秒) */

@@ -35,7 +35,7 @@ public class DiagnosticClient {
   public DiagnosticModel diagnostic(String url) throws IOException {
     final ResponseEntity<String> response = restTemplate.getForEntity(DIAGNOSTIC_URL + "?output=pb&site=" + url, String.class);
 
-    if (response.getStatusCodeValue() == 200) {
+    if (response.getStatusCode().value() == 200 && response.getBody() != null) {
       final Matcher matcher = RESP_PATTERN.matcher(response.getBody());
       if (matcher.find()) {
         return objectMapper.readValue(matcher.group(), DiagnosticModel.class);
@@ -43,7 +43,8 @@ public class DiagnosticClient {
         throw new DiagnosticException("大神API給的格式好像改了喔QQ");
       }
     } else {
-      throw new DiagnosticException("檢查網址的工具壞了喔！(" + response.getStatusCode().value() + " " + response.getStatusCode().getReasonPhrase() + ")");
+      throw new DiagnosticException(
+          "檢查網址的工具壞了喔！(" + response.getStatusCode().value() + " " + response.getStatusCode().toString() + ")");
     }
   }
 
